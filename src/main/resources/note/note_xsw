@@ -1,0 +1,57 @@
+time(3/13)
+1.数据库设计的时候manager表的字段department_id没有设置唯一约束，这样可能会造成一个部门有多个部门经理
+解决：在manager表的department_id字段添加唯一约束(已添加)
+alter table manager add constraint manager_department_id_uk unique (department_id);
+2.
+	<select id="selectAllByPage" resultType="departmentMap">
+		select
+			id, name
+		from 
+			department
+	</select>
+	org.springframework.beans.factory.BeanCreationException: 
+	Error creating bean with name 'sqlSessionFactory' defined in file 
+	[D:\Program Files\TomCat\webapps\meeting\WEB-INF\classes\spring\spring-dao.xml]: 
+	Invocation of init method failed; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 
+	'file [D:\Program Files\TomCat\webapps\meeting\WEB-INF\classes\mapper\DepartmentMapper.xml]'; 
+	nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. 
+	Cause: org.apache.ibatis.builder.BuilderException:
+	 Error resolving class. Cause: org.apache.ibatis.type.TypeException:
+	 Could not resolve type alias 'departmentMap'. 
+	 Cause: java.lang.ClassNotFoundException: Cannot find class: departmentMap
+	注意之前写的时候没有引用一对一，后面用association进行一对一映射的时候采用resultMap，所以resultType也要
+	改成resultMap
+3.一不小心把不应该修改的resultType改成resultMap....	
+	<select id="selectDepartmentByUserId" resultMap="Department">
+		select
+			id, name
+		from 
+			department
+		where 
+			id = (
+				select 
+					department_id
+				from 
+					user
+				where 
+					id = #{id}
+			)
+	</select>
+	
+	nested exception is org.apache.ibatis.builder.IncompleteElementException:
+	  Could not find result map com.example.dao.DepartmentDao.Department] with root cause
+java.lang.IllegalArgumentException: 
+Result Maps collection does not contain value for com.example.dao.DepartmentDao.Department
+
+4.使用spring的form标签的
+<form:select items="${departments}" itemLabel="name" itemValue="id" path="department.id"></form:select>
+注意由于使用了el表达式，如果没有声明isELIgnore="false" 会出现各种各样的异常
+
+5.由于实体manager跟user的各个方面都没有什么区别， 所以开发过程中ManagerMapper直接复制代码， 这样在根据manager表的department_id
+来查找部门信息的时候也调用com.example.dao.DepartmentDao.selectDepartmentByUserId方法，这样造成了department没有正确
+绑定到manager中
+
+3.16
+1.  invitation表应该再增加一个字段isSend，用来代表是否发通知给别邀请参加会议的人
+ 	应会议审核通过了才发信息给与会人员， 不通过不用发通知(done)
+ 	alter table invitation add is_send tinyint default 0 not null;

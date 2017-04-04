@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.RecordDao" >
+	<insert id="insertRecord">
+		insert ignore into 
+			record
+		values
+			(default, #{user.id}, #{meeting.id}, null)
+	</insert>
+	<delete id="deleteRecordById">
+		delete from 
+			record
+		where 
+			id = #{id}
+	</delete>
+	
+	<update id="updateRecord">
+		update
+			record
+		set
+			file = #{file}
+		where 
+			id = #{id}
+	</update>
+	
+	<select id="selectRecordById" resultType="Record">
+		select
+			id, file
+		from 
+			record
+		where 
+			id = #{id}
+	</select>
+	
+	<select id="selectRecordByMeetingId" resultMap="recordMap">
+		select
+			id, user_id, file
+		from 
+			record
+		where 
+			meeting_id = #{id}
+	</select>
+	
+	<select id="selectRecordByUserIdByPage" resultMap="recordMap2">
+		select 
+			a.id, meeting_id, start_time, end_time, meeting_room_Id, title, manager_id, file
+		from 
+			(select id, meeting_id, file from record where user_id = #{userId}) as a
+		join
+			meeting
+		on
+			(a.meeting_id = meeting.id)
+	</select>
+	
+	<resultMap type="Record" id="recordMap">
+		<id property="id" column="id" javaType="int"/>
+		<result property="file" column="file" javaType="string"/>
+		<association property="user" column="id = user_id" select="com.example.dao.UserDao.selectUserById"></association>
+	</resultMap>
+	
+	<resultMap type="Record" id="recordMap2">
+		<id property="id" column="id" javaType="int"/>
+		<result property="file" column="file" javaType="string"/>
+		<result property="meeting.id" column="meeting_id" javaType="int"/>
+		<result property="meeting.startTime" column="start_time" javaType="date"/>
+		<result property="meeting.endTime" column="end_time" javaType="date"/>
+		<result property="meeting.title" column="title" javaType="string"/>
+		<association property="meeting.manager" column="id = manager_id" select="com.example.dao.ManagerDao.selectManagerById"></association>
+		<association property="meeting.meetingRoom" column="id = meeting_room_id" select="com.example.dao.MeetingRoomDao.selectMeetingRoomById"></association>
+	</resultMap>
+</mapper>

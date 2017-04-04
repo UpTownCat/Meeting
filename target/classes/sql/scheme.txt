@@ -1,0 +1,93 @@
+create database meeting_system;
+
+use meeting_system;
+
+create table meeting_room(
+	id int auto_increment comment "id",
+	number varchar(10) not null unique comment "序号",
+	location varchar(50) not null comment "地点",
+	capacity int not null comment "容量",
+	constraint meeting_room_id_pk primary key (id) comment "主键",
+	key meeting_room_num (number)
+)engine=InnoDB,default charset= gbk, comment "会议室表"
+
+create table user(
+	id int auto_increment comment "id",
+	phone varchar(11) not null unique comment "手机号码", 
+	password varchar(31) not null comment "密码",
+	name varchar(50) not null comment "姓名",
+	gender tinyint not null default 1 comment "1代表男：0代表女",
+	photo varchar(30) comment "照片",
+	department_id int not null comment "部门id",
+	constraint user_id_pk primary key (id) comment "主键"
+) engine=InnoDB, default charset=gbk, comment "普通用户表"
+create table department(
+	id int auto_increment comment "id",
+	name varchar(30) not null unique comment "部门名称",
+	constraint department_id_pk primary key (id) comment "主键"
+) engine=InnoDB, default charset=gbk, comment "部门表"
+
+create table manager(
+	id int auto_increment comment "id",
+	phone varchar(11) not null unique comment "手机号码", 
+	password varchar(31) not null comment "密码",
+	name varchar(50) not null comment "姓名",
+	gender tinyint not null default 1 comment "1代表男：0代表女",
+	photo varchar(30) comment "照片",
+	department_id int not null comment "部门id",
+	constraint manager_id_pk primary key (id) comment "主键"
+) engine=InnoDB, default charset=gbk, comment "部门经理表";
+
+alter table user add constraint department_id_fk foreign key (department_id) references department(id) ;
+alter table manager add constraint department_id_fk5 foreign key (department_id) references department(id) ;
+
+create table equipment (
+	id int auto_increment comment "id",
+	name varchar(30) not null unique comment "设备名字",
+	count int not null default 0 comment "数量", 
+	constraint equipment_id primary key (id) comment "主键"
+) engine=InnoDB, default charset=gbk, comment "会议设备表";
+
+create table meeting(
+	id int auto_increment comment "Id",
+	user_id int not null comment "发起会议的Id",
+	name varchar(100) not null comment "",
+	meeting_room_id int not null comment "申请会议室的Id", 
+	appointment_time timestamp not null comment "进行预约的实际",
+	start_time timestamp not null comment "开始时间",
+	end_time timestamp not null comment "结束时间",
+	pass tinyint not null default 2 comment "是否通过审核：0不通过，1通过，2未审核",
+	constraint meeting_id primary key (id),
+	constraint user_id_fk2 foreign key (user_id) references user(id)
+) engine=InnoDB, default charset=gbk, comment "会议表";
+	
+create table record(
+	id int auto_increment comment "id",
+	user_id int not null comment "记录人Id",
+	file varchar(30) comment "文档",
+	constraint record_id primary key (id)
+) engine=InnoDB, default charset=gbk, comment "会议记录表"
+
+create table invitation(
+	id int auto_increment comment "Id",
+	meeting_id int not null comment "会议的Id",
+	user_id int not null comment "与会人员的Id",
+	access tinyint default 2 not null comment "是否参加：0 F， 1 T， 2不确定",
+	constraint relateed_user_id_pk primary key (id),
+	constraint meeting_id_fk2 foreign key (meeting_id) references meeting(id),
+	constraint user_id_fk3 foreign key (user_id) references user(id)
+) engine=InnoDB, default charset=gbk, comment "与会人员表";
+
+create table related_equipment(
+	id int auto_increment comment "id",
+	equipment_id int not null comment "设备Id",
+	meeting_id int not null comment "会议Id",
+	count int not null comment "数量",
+	constraint related_equipment_id_pk primary key (id),
+	constraint equipment_id_fk foreign key (equipment_id) references equipment(id),
+	constraint meeting_id_fk3 foreign key (meeting_id) references meeting(id)
+) engine=InnoDB, default charset=gbk, comment "会议所需设备表";
+
+alter table meeting drop foreign key user_id_fk2;
+alter table meeting change user_id manager_id int not null;
+alter table meeting add constraint manager_id_fk foreign key references manager(id);

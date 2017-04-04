@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.InvitationDao">
+	<insert id="insertInvitationBatch">
+		insert ignore into
+			invitation
+		values
+			<foreach collection="list" item="invitation" separator=",">
+				(default, #{invitation.meeting.id}, #{invitation.user.id}, 0, 2)
+			</foreach>
+	</insert>
+	
+	<delete id="deleteInvitation">
+		delete from
+			invitation
+		where 
+			id = #{id}
+	</delete>
+	
+	<delete id="deleteInvitationByMeetingId">
+		delete from 
+			invitation
+		where
+			meeting_id = #{id}
+	</delete>
+	
+	<update id="updateInvitation">
+		update
+			invitation
+		set 
+			is_access = #{state}
+		where 
+			id = #{id}
+	</update>
+	
+	<select id="selectInvitationById" resultType="Invitation">
+		select
+			id, meeting_id as "meeting.id", user_id as "user.id", is_access, is_send
+		from 
+			invitation
+		where
+			id = #{id}
+	</select>
+	
+	<select id="selectInvitationByMeetingId" resultMap="invitationMap">
+		select
+			id, user_id, is_access
+		from 
+			invitation
+		where 
+			meeting_id = #{id}
+	</select>
+	
+	<select id="selectInvitationByUserIdAndMeetingId" resultType="Invitation">
+		select
+			id, is_access
+		from 
+			invitation
+		where 
+			user_id = #{userId} and meeting_id = #{meetingId}
+	</select>
+	
+	<select id="selectInvitationByUserIdByPage" resultMap="invitationMap2">
+		select
+			a.id, start_time, end_time, title, manager_id, meeting_id, is_access, meeting_room_id
+		from 
+			(select id, meeting_id, is_access from invitation where user_id = #{userId}) as a
+		join
+			meeting
+		on
+			(a.meeting_id = meeting.id)
+		where 1 = 1
+	</select>
+	
+	<select id="selectInvitationByUserIdByDate" resultMap="invitationMap2">
+		select
+			a.id, start_time, end_time, title, manager_id, meeting_id, is_access, meeting_room_id
+		from 
+			(select id, meeting_id, is_access from invitation where user_id = #{userId}) as a
+		join
+			meeting
+		on
+			(a.meeting_id = meeting.id)
+		where 1 = 1 and start_time > #{startTime} and end_time <![CDATA[<=]]> #{endTime} and is_pass > 0
+	</select>
+	
+	<resultMap type="Invitation" id="invitationMap">
+		<id property="id" column="id" javaType="int"/>
+		<association property="user" column="id = user_id" select="com.example.dao.UserDao.selectUserById"></association>
+	</resultMap>
+	
+	<resultMap type="Invitation" id="invitationMap2">
+		<id property="id" column="id" javaType="int"/>
+		<result property="isAccess" column="is_access" javaType="int"/>
+		<result property="meeting.id" column="meeting_id" javaType="int"/>
+		<result property="meeting.title" column="title" javaType="string"/>
+		<result property="meeting.startTime" column="start_time" javaType="date"/>
+		<result property="meeting.endTime" column="end_time" javaType="date"/>
+		<association property="meeting.manager" column="id = manager_id" select="com.example.dao.ManagerDao.selectManagerById"></association>
+		<association property="meeting.meetingRoom" column="id = meeting_room_id" select="com.example.dao.MeetingRoomDao.selectMeetingRoomById"></association>
+	</resultMap>
+</mapper>

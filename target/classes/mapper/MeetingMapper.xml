@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.MeetingDao">
+	<insert id="insertMeeting" useGeneratedKeys="true" keyProperty="id">
+		insert into
+			meeting
+		values
+			(default, #{manager.id}, #{title}, #{meetingRoom.id}, #{appointmentTime},#{startTime}, #{endTime}, default);
+	</insert>
+
+	<delete id="deleteMeeting">
+		delete from
+			meeting
+		where
+			id = #{id}
+	</delete>
+
+	<update id="updateMeeting">
+		update
+			meeting
+		set
+			manager_id = #{manager.id},
+			title = #{title},
+			meeting_room_id = #{meetingRoom.id},
+			appointment_time = #{appointmentTime},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			is_pass = #{isPass}
+		where
+			id = #{id}
+	</update>
+	
+	<update id="updateMeetingState">
+		update
+			meeting
+		set
+			is_pass = #{state}
+		where 
+			id = #{id}
+	</update>
+
+	<select id="selectMeetingById" resultMap="meetingMap">
+		select
+			id, title, appointment_time,start_time, end_time, is_pass,
+			manager_id, meeting_room_id 
+		from
+			meeting
+		where
+			id = #{id}
+	</select>
+
+	<select id="selectAll" resultType="Meeting">
+		select
+			id, title, appointment_time, start_time, end_time, is_pass,
+			manager_id as "manager.id",
+			meeting_room_id as "meetingRoom.id"
+		from
+			meeting
+	</select>
+
+	<select id="selectAllByPage" resultMap="meetingMap">
+		select
+			id, title, appointment_time, start_time, end_time, is_pass,
+			manager_id ,
+			meeting_room_id
+		from
+			meeting
+		where 1 = 1
+	</select>
+	
+	<select id="selectMeetingByRoomIdAndDate" resultMap="meetingMap2">
+		select
+			id, title, start_time, end_time , manager_id, is_pass
+		from
+			meeting
+		where 
+			meeting_room_id = #{meetingRoomId} and start_time >= #{startTime} and end_time <![CDATA[<=]]> #{endTime}
+			<if test="isPass != -1">
+				and is_pass = #{isPass}
+			</if>
+	</select>
+	
+	<select id="selectMeetingByRoomIdAndDate2" resultMap="meetingMap2">
+		select
+			id, title, start_time, end_time , manager_id
+		from
+			meeting
+		where 
+			meeting_room_id = #{meetingRoomId} and start_time >= #{startTime} and end_time <![CDATA[<=]]> #{endTime} and is_pass=2
+	</select>
+	<!-- 处理日视图有没有会议召开 -->
+	<select id="selectMeetingByDate" resultType="Meeting">
+		select
+			count(*) as "isPass"
+		from 
+			meeting
+		where 
+			start_time >= #{startTime} and  end_time <![CDATA[<=]]> #{endTime} and is_pass = 1
+	</select>
+	
+	<resultMap type="Meeting" id="meetingMap">
+		<id property="id" column="id" javaType="int"/>
+		<result property="title" column="title" javaType="string"/>
+		<result property="appointmentTime" column="appointment_time" javaType="date"/>
+		<result property="startTime" column="start_time" javaType="date"/>
+		<result property="endTime" column="end_time" javaType="date"/>
+		<result property="isPass" column="is_pass" javaType="int"/>
+		<association property="manager" column="id = manager_id" select="com.example.dao.ManagerDao.selectManagerByMeetingId"></association>
+		<association property="meetingRoom" column="id = meeting_room_id" select="com.example.dao.MeetingRoomDao.selectMeetingRoomByMeetingId"></association>
+	</resultMap>
+	
+	<resultMap type="Meeting" id="meetingMap2">
+		<id property="id" column="id" javaType="int"/>
+		<result property="title" column="title" javaType="string"/>
+		<result property="startTime" column="start_time" javaType="date"/>
+		<result property="endTime" column="end_time" javaType="date"/>
+		<result property="isPass" column="is_pass" javaType="int"/>
+		<association property="manager" column="id = manager_id" select="com.example.dao.ManagerDao.selectManagerByMeetingId"></association>
+	</resultMap>
+	
+	
+</mapper>

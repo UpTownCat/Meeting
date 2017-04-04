@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.ManagerDao">
+	<insert id="insertManager" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		manager
+		values
+		(default, #{phone},#{email}, #{password}, #{name}, #{gender}, #{photo},
+		#{department.id})
+	</insert>
+
+	<delete id="deleteManager">
+		delete from
+		manager
+		where
+		id = #{id}
+	</delete>
+
+	<update id="updateManager">
+		update
+		manager
+		set
+		name = #{name}, password = #{password}, phone = #{phone},
+		gender=#{gender}, department_id = #{department.id}
+		where
+		id = #{id}
+	</update>
+
+	<select id="selectManagerById" resultMap="managerMap">
+		select
+		id, phone, password, name, photo, gender, email
+		from
+		manager
+		where
+		id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="managerMap">
+		select
+		id, phone, password, name, photo, gender, email
+		from
+		manager
+	</select>
+
+	<select id="selectAllByPage" resultMap="managerMap">
+		select
+			id, phone, password, name, photo, gender, email
+		from
+			manager
+		where 
+			1 = 1
+	</select>
+
+	<select id="selectManagerByPhoneAndPassword" resultMap="managerMap">
+		select
+		id, phone, password, name, photo, gender, email
+		from
+		manager
+		where
+		phone = #{phone} and password = #{password}
+	</select>
+
+	<select id="selectManagerByDepartmentId" resultType="Manager">
+		select
+		id, phone, name, gender, photo, email
+		from
+		manager
+		where
+		department_id = #{id}
+	</select>
+	
+	<select id="selectManagerByMeetingId" resultType="Manager">
+		select
+			id, name, email
+		from
+			manager
+		where 
+			id = #{id}
+	</select>
+
+	<resultMap type="Manager" id="managerMap">
+		<id property="id" column="id" javaType="int" />
+		<result property="name" column="name" javaType="String" />
+		<result property="phone" column="phone" javaType="String" />
+		<result property="email" column="email" javaType="String"/>
+		<result property="password" column="password" javaType="String" />
+		<result property="photo" column="photo" javaType="String" />
+		<result property="gender" column="gender" javaType="int" />
+		<association property="department" column="id"
+			select="com.example.dao.DepartmentDao.selectDepartmentByManagerId"></association>
+	</resultMap>
+</mapper>

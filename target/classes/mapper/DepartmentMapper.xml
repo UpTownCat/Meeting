@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.DepartmentDao">
+	<insert id="insertDepartment" useGeneratedKeys="true"
+		keyProperty="id">
+		insert ignore into
+		department
+		values
+		(default, #{name})
+	</insert>
+
+	<delete id="deleteDepartment">
+		delete from
+		department
+		where
+		id = #{id}
+	</delete>
+
+	<update id="updateDepartment">
+		update
+		department
+		set
+		name = #{name}
+		where
+		id = #{id}
+	</update>
+
+	<select id="selectDepartmentById" resultMap="departmentMap">
+		select
+		id, name
+		from
+		department
+		where
+		id = #{id}
+	</select>
+
+	<select id="selectAllByPage" resultMap="departmentMap">
+		select
+			id, name
+		from
+			department
+		where 
+			1 = 1
+	</select>
+
+	<select id="selectAll" resultMap="departmentMap">
+		select
+			id, name
+		from
+			department
+	</select>
+	
+	<select id="selectAllByCondiction" resultMap="departmentMap">
+		select
+			id, name
+		from
+			department
+		where
+			id not in (select department_id from manager)
+	</select>
+	
+	<select id="selectAllDepartmentName" resultType="Department">
+		select
+			id, name
+		from 
+			department
+	</select>
+
+	<select id="selectDepartmentByUserId" resultType="Department">
+		select
+		id, name
+		from
+		department
+		where
+		id = (
+		select
+		department_id
+		from
+		user
+		where
+		id = #{id}
+		)
+	</select>
+
+	<select id="selectDepartmentByManagerId" resultType="Department">
+		select
+		id, name
+		from
+		department
+		where
+		id = (
+		select
+		department_id
+		from
+		manager
+		where
+		id = #{id}
+		)
+	</select>
+
+	<resultMap type="Department" id="departmentMap">
+		<id property="id" column="id" javaType="int" />
+		<result property="name" column="name" javaType="string" />
+		<association property="manager" column="id"
+			select="com.example.dao.ManagerDao.selectManagerByDepartmentId"></association>
+		<collection property="users" column="id"
+			select="com.example.dao.UserDao.selectUserByDepartmentId"></collection>
+	</resultMap>
+</mapper>

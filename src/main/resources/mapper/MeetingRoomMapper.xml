@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.MeetingRoomDao">
+	<insert id="insertMeetingRoom" useGeneratedKeys="true"
+		keyProperty="id">
+		insert ignore into
+		meeting_room
+		values
+		(default, #{number}, #{location}, #{capacity}, #{photo})
+	</insert>
+
+	<delete id="delateMeetingRoom">
+		delete from
+		meeting_room
+		where
+		id = #{id}
+	</delete>
+
+	<update id="updateMeetingRoom">
+		update
+		meeting_room
+		set
+		number = #{number},
+		location = #{location},
+		capacity = #{capacity}
+		where
+		id = #{id}
+	</update>
+
+	<select id="selectMeetingRoomById" resultType="MeetingRoom">
+		select
+		id, number, location, capacity, photo
+		from
+		meeting_room
+		where
+		id = #{id}
+	</select>
+
+	<select id="selectAll" resultType="MeetingRoom">
+		select
+		id, number, location, capacity
+		from
+		meeting_room
+	</select>
+	
+	<select id="selectAllByCapacity" resultType="MeetingRoom">
+		select
+			id, number, capacity
+		from 
+			meeting_room
+		where 
+			capacity >= #{capacity}
+	</select>
+	
+	<select id="selectAllByCapacityAndDate" resultType="MeetingRoom">
+		select 
+			 id, number, capacity
+		from 
+			meeting_room
+		where 
+			capacity >= #{capacity} and id not in 
+			(select meeting_room_id from meeting where start_time >= #{startTime} and end_time <![CDATA[<=]]>#{endTime} and is_pass = 1)
+		order by 
+			capacity
+	</select>
+
+	<select id="selectAllByPage" resultType="MeetingRoom">
+		select
+		id, number, location, capacity
+		from
+		meeting_room
+	</select>
+	
+	<select id="selectMeetingRoomByMeetingId" resultType="MeetingRoom">
+		select
+			id, number, location
+		from 
+			meeting_room
+		where 
+			id = #{id}
+	</select>
+
+
+</mapper>

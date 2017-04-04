@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.CommonDao" >
+	
+	<update id="updatePhoto">
+		update 
+			<if test="table == 1">
+				user
+			</if>
+			<if test="table == 2">
+				manager
+			</if>
+			<if test="table == 3">
+				meeting_room
+			</if>
+		set
+			photo = #{photo}
+		where 
+			id = #{id}
+	</update>
+		
+	
+</mapper>

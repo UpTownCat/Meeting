@@ -1,0 +1,48 @@
+
+
+1.添加会议会议的选择会议器材的时候如果勾了复选框
+	之后没有给输入框输入值的话会出现异常
+	所有后台要做验证处理，或者交给前台
+	
+2.
+ 会议记录表应该增加一个字段meeting_id， 不然没法知道该记录属于那个会议
+  alter table record add meeting_id int not null after user_id;
+  alter table record add constraint meeting_id_fk7 foreign key (meeting_id) references meeting(id);
+  
+  3.26
+ 	计划：1.完成会议的修改
+ 		 2.完成会议的删除
+ 		 
+ 1.会议的修改的时候
+ 	(1).修改参会人员：对参会人员进行增加或者删除或者不修改，
+ 					所以增加的的的时候要想Invitation表中增加一条记录
+ 					-->数据库设计时没有使用user_id, meeting_id唯一约束
+ 					     所以可能会出现重复记录
+ 					     ----> alter table invitation add constraint usre_id_meeing_id_uk unique (user_id, meeting_id);
+ 								(done)
+ 								---->invitationMapper的insert into 改为 insert ignore into
+ 								这样修改之后如果出现重复记录的话不会抛异常， 但是返回的影响
+ 								数目的条数为0；
+ 								
+ 					-->如果把多选框的沟去掉说明要删除这个邀请
+ 	(最终解决方案：进行会议修改时直接把原来的会议邀请人删除， 重新添加邀请， 会议设备则先归还然后删除之后新增)				
+ 	
+ 	
+ 3.删除设备之后预约了该设备的会议应该怎么办		
+ 
+ 3.27
+ 
+ 	user表新增一个email字段
+ 	 --> alter table user add email varchar(30) after phone;	
+ 	 
+ 	 
+ 3.29
+ 
+	无语.....发ajax请求时没有考虑异步请求， 造成超链接没等请求完成就直接跳转。 
+
+3.31
+	把record表的user_id, meeting_id 唯一约束加上	 
+
+4.1
+	用户添加与会人员之后， meetingRoomDao应该要有一个根据capacity查找容量
+	大于参会人数的方法		
