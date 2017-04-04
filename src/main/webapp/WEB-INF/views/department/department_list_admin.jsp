@@ -60,7 +60,7 @@ pageContext.setAttribute("partName", "manager");
 				<form class="navbar-form navbar-left" id="form">
 				     <input type="hidden" name="index" value="1" id="toIndex">
 				     <div class="form-group">
-					     <input type="text" class="form-control" name="name" placeholder="部门经理姓名" value="${page.name }">
+					     <input type="text" class="form-control" name="name" placeholder="部门" value="${page.name }">
 				     </div>
 				     <button type="submit" class="btn btn-info">搜索</button>
 			    </form>
@@ -71,6 +71,7 @@ pageContext.setAttribute("partName", "manager");
 							<th>部门经理</th>
 							<th></th>
 							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -79,6 +80,9 @@ pageContext.setAttribute("partName", "manager");
 							<tr>
 								<td>${department.name }</td>
 								<td>${department.manager == null ? "该部门暂时没有部门经理" : department.manager.name}</td>
+								<td>
+									<a href="/meeting/department/${department.id }/detail" class="btn btn-info">详情</a>
+								</td>
 								<td><a class="btn btn-primary"
 									href="/meeting/department/${department.id }/update?index=${page.index }">更新</a></td>
 								<td><a class="btn btn-danger" href="#deleteModal"

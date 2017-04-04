@@ -57,13 +57,20 @@ public class DepartmentController {
 		List<Manager> managers = managerService.selectAll();
 		map.put("department", department);
 		map.put("managers", managers);
-		return "/department/update";
+		return "/department/department_update_admin";
 	}
 	
 	@RequestMapping(value="/{id}/update", method=RequestMethod.PUT)
 	public String updateDepartment(Integer index, @ModelAttribute Department department) {
 		departmentService.updateDepartment(department);
 		return LIST_URL + "?index=" + index; 
+	}
+	
+	@RequestMapping(value="/{id}/detail", method=RequestMethod.GET)
+	public String getDepartment(@PathVariable Integer id, Map<String, Object> map) {
+		Department department = departmentService.selectDepartmentById(id);
+		map.put("department", department);
+		return "/department/department_detail_admin";
 	}
 //	@ModelAttribute
 //	public void bindDepartment(@RequestParam(value="id", required=false)Integer id, Map<String, Object> map) {

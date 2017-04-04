@@ -23,28 +23,37 @@ pageContext.setAttribute("partName", "equipment");
 </head>
 
 <body>
-	<div class="container">
+
+	<%@include file="../nav.jsp" %>
+	<div class="left" style="float: left; margin-top: 50px">
+		<%@include file="../menu.jsp" %>
+	</div>
+	<div class="container col-lg-9" style="margin-top: 50px; padding: 0 0">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3>修改会议室设备</h3>
+				<h3>修改设备</h3>
 			</div>
 			<div class="panel-body">
-				<form:form modelAttribute="equipment" method="post"
-					class="form-inline">
-					<input type="hidden" name="_method" value="PUT">
-					<input type="hidden" name="index" value="${index }">
-					<div class="form-group">
-						<label class="label-control">名称</label>
-						<form:input path="name" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label class="label-control">数量</label>
-						<form:input path="count" class="form-control" />
-					</div>
-					<button class="btn btn-primary">确定</button>
-				</form:form>
+				<div class="col-lg-7">
+					<form:form modelAttribute="equipment" method="post" class="form">
+						<input type="hidden" name="_method" value="PUT">
+						<input type="hidden" name="index" value="${index }">
+						<div class="form-group">
+							<label class="label-control">名称</label>
+							<form:input path="name" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label class="label-control">数量</label>
+							<form:input path="count" class="form-control" />
+						</div>
+						<button class="btn btn-primary">确定</button>
+					</form:form>
+				</div>
+						
 			</div>
 		</div>
 	</div>
+
+
 </body>
 </html>

@@ -52,9 +52,10 @@ public class EquipmentController {
 	}
 	
 	@RequestMapping(value="/{id}/update", method=RequestMethod.GET)
-	public String prepareUpdate(Integer index,Map<String, Object>map) {
+	public String prepareUpdate(@PathVariable Integer id, Integer index,Map<String, Object>map) {
 		map.put("index", index);
-		return "/equipment/update";
+		map.put("equipment", equipmentService.selectEquipmentById(id));
+		return "/equipment/equipment_update_admin";
 	}
 	
 	@RequestMapping(value="/{id}/update", method=RequestMethod.PUT)
@@ -63,11 +64,11 @@ public class EquipmentController {
 		return LIST_URL + "?index=" + index;
 	}
 	
-	@ModelAttribute
-	public void bindEquipment(@RequestParam(value="id", required=false) Integer id, Map<String, Object> map) {
-		if(id != null) {
-			Equipment equipment = equipmentService.selectEquipmentById(id);
-			map.put("equipment", equipment);
-		}
-	}
+//	@ModelAttribute
+//	public void bindEquipment(@RequestParam(value="id", required=false) Integer id, Map<String, Object> map) {
+//		if(id != null) {
+//			Equipment equipment = equipmentService.selectEquipmentById(id);
+//			map.put("equipment", equipment);
+//		}
+//	}
 }
