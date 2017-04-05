@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,12 +11,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.bean.Department;
 import com.example.bean.Manager;
 import com.example.bean.Page;
+import com.example.bean.User;
+import com.example.dto.UserMessageDto;
 import com.example.service.DepartmentService;
 import com.example.service.ManagerService;
+import com.example.service.UserService;
 
 @Controller
 @RequestMapping("/department")
@@ -24,6 +29,8 @@ public class DepartmentController {
 	private DepartmentService departmentService;
 	@Autowired
 	private ManagerService managerService;
+	@Autowired
+	private UserService userService;
 	private final static String LIST_URL = "redirect:/department/list";
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
@@ -70,7 +77,27 @@ public class DepartmentController {
 	public String getDepartment(@PathVariable Integer id, Map<String, Object> map) {
 		Department department = departmentService.selectDepartmentById(id);
 		map.put("department", department);
+		map.put("total", department.getUsers().size());
 		return "/department/department_detail_admin";
+	}
+	
+	@RequestMapping(value="/users", method=RequestMethod.GET)
+	@ResponseBody
+	public List<UserMessageDto> getUsers(Page page) {
+		List<UserMessageDto> dtos = new ArrayList<UserMessageDto>();
+		page.setSize(5);
+		List<User> users = userService.selectAllByPage(page);
+		for(int i = 0; i < users.size(); i++) {
+			User user = users.get(i);
+			int id = user.getId();
+			String name = user.getName();
+			String phone = user.getPhone();
+			String email = user.getEmail();
+			int gender = user.getGender();
+			UserMessageDto dto = new UserMessageDto(id, name, phone, email, gender);
+			dtos.add(dto);
+		}
+		return dtos;
 	}
 //	@ModelAttribute
 //	public void bindDepartment(@RequestParam(value="id", required=false)Integer id, Map<String, Object> map) {

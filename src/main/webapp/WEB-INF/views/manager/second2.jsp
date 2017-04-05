@@ -53,7 +53,6 @@
 					var href = $(this).find("a").attr("href");
 					var index = href.substring(href.lastIndexOf("=") + 1);
 					initlizePageItem(index, total);
-					console.log(index);
 					t.init(index);
 					return false;
 				});

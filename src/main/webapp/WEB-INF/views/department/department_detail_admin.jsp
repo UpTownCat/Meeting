@@ -20,6 +20,109 @@ pageContext.setAttribute("partName", "/meeting/user");
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <%@include file="../common3l.jsp"%>
+<script type="text/javascript" src="../../resources/js/page2.js"></script>
+<script type="text/javascript" src="../../resources/js/table2.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var departmentId = "${department.id }";
+		var total = "${total }";
+		page.init(6, 1, total, "");
+		t.init(1, 1);
+		$(".pageItem2").click(function(){
+			var href = $(this).find("a").attr("href");
+			var index = href.substring(href.lastIndexOf("=") + 1);
+			initlizePageItem(index, total);
+			t.init(index);
+			return false;
+		});
+		
+		$("#next").click(function(){
+			var pageContent = $("#pageContent2");
+			var lis = pageContent.find("li");
+			var index2 = 0;
+			for(var i = 1; i < lis.length - 2; i++) {
+				var clazz = lis.eq(i).attr("class");
+				if(clazz.length > 10) {
+					index2 = i;
+					break;
+				}
+			}
+			if(index2 != total) {
+				initlizePageItem(index2 + 1, total);
+				t.init(index2 + 1);
+			}
+			return false;
+		});
+		
+		$("#previous").click(function(){
+			var pageContent = $("#pageContent2");
+			var lis = pageContent.find("li");
+			var index2 = 0;
+			for(var i = 1; i < lis.length - 2; i++) {
+				var clazz = lis.eq(i).attr("class");
+				if(clazz.length > 10) {
+					index2 = i;
+					break;
+				}
+			}
+			if(index2 != 1) {
+				initlizePageItem(index2 - 1, total);
+				t.init(index2 - 1);
+			}
+			return false;
+		});
+		$("#forward").click(function(){
+			var val = $("#forwardPage").val();
+			$("#forwardPage").val("");
+			initlizePageItem(val, total);
+			t.init(val);
+			return false;
+		});
+		
+		function initlizePageItem(index, total) {
+			var pageContent = $("#pageContent2");
+			var lis = pageContent.find("li");
+			for(var i = 1; i < lis.length - 2; i++) {
+				lis.eq(i).removeClass("active");
+			}
+			if(total <= 6) {
+				for(var i = 1; i < lis.length - 2; i++) {
+					if(i == index){
+						lis.eq(i).addClass("active");
+					}
+				}
+			}else {
+				if(index > 4 && index <= total - 2) {
+					for(var i = 1; i < lis.length - 2; i++) {
+						var val = index - 4 + i;
+						lis.eq(i).find("a").html("" + val).attr("href", "=" + val);
+						if(val == index) {
+							lis.eq(i).addClass("active");
+						}
+					}
+				}else{
+					if(index <= 4){
+						for(var i = 1; i < lis.length - 2; i++) {
+							lis.eq(i).find("a").html("" + i).attr("href", "=" + i);
+							if(i == index) {
+								lis.eq(i).addClass("active");
+							}
+						}
+					}else {
+						if(index > total - 2) {
+							for(var i = lis.length - 3; i >= 1; i--) {
+								lis.eq(i).find("a").html("" + (total - (6 - i))).attr("href", "=" + (total - 6 + i));
+								if((total - 6 + i) == index) {
+									lis.eq(i).addClass("active");
+								}
+							}
+						}
+					}
+				}
+			}
+		};
+	})
+</script>
 </head>
 
 <body>
@@ -56,7 +159,11 @@ pageContext.setAttribute("partName", "/meeting/user");
 					</table>
 					<div class="well">
 						<h4>员工信息</h4>
-						<table class="table table-bordered table-striped">
+						<div style="float:right; margin-top: -30px">
+							<ul class="pagination" id="pageContent2" style="float:left; margin-top: -5px">
+							</ul>
+						</div>
+						<table class="table table-bordered table-striped" id="table">
 							<tr>
 								<th>姓名</th>
 								<th>电话</th>
@@ -65,39 +172,39 @@ pageContext.setAttribute("partName", "/meeting/user");
 								<th></th>
 							</tr>
 							<tr>
-								<td>fsdfs</td>
-								<td>fsdf</td>
-								<td>fsdf</td>
-								<td>fds</td>
-								<td>fds</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 							<tr>
-								<td>fsdfs</td>
-								<td>fsdf</td>
-								<td>fsdf</td>
-								<td>fds</td>
-								<td>fds</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 							<tr>
-								<td>fsdfs</td>
-								<td>fsdf</td>
-								<td>fsdf</td>
-								<td>fds</td>
-								<td>fds</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 							<tr>
-								<td>fsdfs</td>
-								<td>fsdf</td>
-								<td>fsdf</td>
-								<td>fds</td>
-								<td>fds</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 							<tr>
-								<td>fsdfs</td>
-								<td>fsdf</td>
-								<td>fsdf</td>
-								<td>fds</td>
-								<td>fds</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 						</table>
 					</div>
