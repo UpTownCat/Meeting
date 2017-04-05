@@ -72,7 +72,6 @@ public class CommonController {
 	
 	@RequestMapping(value="/photo2", method=RequestMethod.POST)
 	public String updatePhoto(Integer id, int table, String file, int index, MultipartFile photo) {
-		System.out.println(file);
 		if(photo != null && photo.getOriginalFilename() != null) {
 			File f = new File(CommonUtil.getConfigString("photoLoattion") + "/" + file);
 			if(f.exists()) {

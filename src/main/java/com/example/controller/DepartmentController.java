@@ -76,8 +76,9 @@ public class DepartmentController {
 	@RequestMapping(value="/{id}/detail", method=RequestMethod.GET)
 	public String getDepartment(@PathVariable Integer id, Map<String, Object> map) {
 		Department department = departmentService.selectDepartmentById(id);
+		int size = department.getUsers().size() / 5 ;
 		map.put("department", department);
-		map.put("total", department.getUsers().size());
+		map.put("total", department.getUsers().size() % 5 == 0 ? size : size + 1);
 		return "/department/department_detail_admin";
 	}
 	

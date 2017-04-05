@@ -80,7 +80,7 @@
 											<td>
 												<c:if test="${msg.available == 1 }">
 													<c:if test="${role == 2 }">
-														<a class="btn btn-success" href="/meeting/manager/meeting/first?roomId=${dto.roomId }">ԤԼ</a>
+														<a class="btn btn-success" href="/meeting/manager/meeting/first1?roomId=${dto.roomId }">ԤԼ</a>
 													</c:if>
 													<c:if test="${role != 2 }">
 														<a class="btn btn-success" disabled="disabled">ԤԼ</a>

@@ -26,6 +26,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 	$(function(){
 		var departmentId = "${department.id }";
 		var total = "${total }";
+		console.log(total);
 		page.init(6, 1, total, "");
 		t.init(1, 1);
 		$(".pageItem2").click(function(){
