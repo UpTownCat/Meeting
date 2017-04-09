@@ -67,7 +67,6 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th></th>
 									<th>器材</th>
 									<th>总量</th>
 									<th>使用数量</th>
@@ -76,18 +75,9 @@
 							<tbody>
 								<c:forEach items="${equipments }" var="equipment">
 									<tr>
-										<c:if test="${equipment.need <= 0 }">
-											<td><input type="checkbox" id="ee${eqiupment.id }"></td>
 											<td>${equipment.name }</td>
 											<td>${equipment.count }</td>
 											<td><input type="number" class="form-control" name="${equipment.id }" style="margin-top:-2px" min="0" max="1000"></td>
-										</c:if>
-										<c:if test="${equipment.need > 0 }">
-											<td><input type="checkbox" checked="checked" id="ee${eqiupment.id }"></td>
-											<td>${equipment.name }</td>
-											<td>${equipment.count }</td>
-											<td><input type="number" class="form-control" name="${equipment.id }" value="${equipment.need }" style="margin-top: -2px" min="0" max="1000"></td>
-										</c:if>
 									</tr>
 								</c:forEach>
 							</tbody>

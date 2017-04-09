@@ -12,9 +12,11 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bean.Admin;
@@ -132,6 +134,13 @@ public class CommonController {
 				}
 			}
 		}
+	}
+	
+	@RequestMapping(value="/md5", method=RequestMethod.POST)
+	@ResponseBody
+	public String getMd5(String password) {
+		String md5 = DigestUtils.md5DigestAsHex(password.getBytes());
+		return md5;
 	}
 	
 }
