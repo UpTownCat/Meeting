@@ -1,5 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<link href="../resources//css/jquery-confirm.css" rel="stylesheet">
+<link href="../resources//css/jquery-confirm.less" rel="stylesheet">
 <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../resources/css/calendar.css">
 <script type="text/javascript" src="../resources/js/jquery-1.9.1.min.js"></script>
@@ -8,3 +10,4 @@
 <script type="text/javascript" src="../resources/js/common.js"></script>
 <script type="text/javascript" src="../resources/js/page.js"></script>
 <script type="text/javascript" src="../resources/js/autoMail.1.0.min.js"></script>
+<script type="text/javascript" src="../resources//js/jquery-confirm.js"></script>

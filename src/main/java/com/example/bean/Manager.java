@@ -75,7 +75,7 @@ public class Manager {
 		this.department = department;
 	}
 
-	public Manager(int gender, String phone, String password, String name, String photo,
+	public Manager(int gender, String phone, String password, String name, String photo, String email,
 			Department department) {
 		super();
 		this.phone = phone;
@@ -83,6 +83,7 @@ public class Manager {
 		this.name = name;
 		this.gender = gender;
 		this.photo = photo;
+		this.email = email;
 		this.department = department;
 	}
 

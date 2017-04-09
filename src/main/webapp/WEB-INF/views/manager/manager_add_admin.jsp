@@ -43,7 +43,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 			</div>
 			<div class="panel-body">
 				<div class="col-lg-7">
-						<form method="post" class="form">
+						<form method="post" class="form" enctype="multipart/form-data">
 							<input type="hidden" name="index" value="${param.index }">
 							<div class="form-group">
 								<label class="label-control">姓名</label>
@@ -61,9 +61,23 @@ pageContext.setAttribute("partName", "/meeting/user");
 								<label class="label-control">密码</label>
 								<input name="password" class="form-control" />
 							</div>
+							
+							<div class="form-group">
+								<label class="label-control">性别</label>
+								<br>
+								<input type="radio" name="gender" value="1">男 &nbsp;&nbsp;&nbsp;
+								<input type="radio" name="gender" value="0">女
+							</div>
+							
+							<div class="form-group">
+								<label class="label-control">照片</label>
+								<input name="photo" type="file" id="fileInput" />
+							</div>
+							
 							<div class="form-group">
 								<label class="label-control">部门</label>
 								<select name="departmentId" class="form-control">
+									<option value="0">请选择</option>
 									<c:forEach items="${departments }" var="department">
 										<option value="${department.id }">${department.name }</option>
 									</c:forEach>
@@ -72,6 +86,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 							<button class="btn btn-primary pull-right">确定</button>
 						</form>
 				</div>
+				<%@include file="../preview_img.jsp" %>
 			</div>
 		</div>
 	</div>

@@ -70,35 +70,6 @@ public class RoomViewController {
 		map.put("meetingRoom", meetingRoom);
 		return "/room/room_detail_admin";
 	}
-	@RequestMapping(value="/{photo}/photo", method=RequestMethod.GET)
-	public void getMeetingRoomPhoto(@PathVariable String photo, HttpServletResponse response) {
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
-		try {
-			outputStream = response.getOutputStream();
-			CommonUtil.writePhoto(photo, inputStream, outputStream);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			if(outputStream != null) {
-				try {
-					outputStream.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 	
 	@RequestMapping(value="/capacity", method=RequestMethod.GET) 
 	@ResponseBody
@@ -153,9 +124,13 @@ public class RoomViewController {
 		}
 	}
 	
+	@RequestMapping(value="/add", method=RequestMethod.GET)
+	public String prepareAdd() {
+		return "/room/room_add_admin";
+	}
+	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public String addRoom(String number, Integer capacity, String location, Integer index, MultipartFile photo) {
-//		meetingRoomService.addMeetingRoom(room);
 		String fileName = CommonUtil.saveFile(photo, CommonUtil.getConfigString("photoLocation"), 1);
 		MeetingRoom meetingRoom = new MeetingRoom(capacity, number, location, fileName);
 		meetingRoomService.addMeetingRoom(meetingRoom);

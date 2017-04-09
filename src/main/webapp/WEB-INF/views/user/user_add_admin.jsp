@@ -22,13 +22,14 @@ pageContext.setAttribute("partName", "/meeting/user");
 	-->
 <%@include file="../common2l.jsp"%>
 <script type="text/javascript">
-		$(function() {
-			$('#email1').autoMail({
-				emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn']
-			});
-		})
-		
-	</script>
+	$(function() {
+		$('#email1').autoMail(
+				{
+					emails : [ 'qq.com', '163.com', '126.com', 'sina.com',
+							'sohu.com', 'yahoo.cn' ]
+				});
+	})
+</script>
 </head>
 
 <body>
@@ -71,11 +72,12 @@ pageContext.setAttribute("partName", "/meeting/user");
 							</div>
 							<div class="form-group">
 								<label class="label-control">’’∆¨</label>
-								<input type="file" name="photo">
+								<input type="file" name="photo" id="fileInput">
 							</div>
 							<button class="btn btn-primary pull-right">»∑∂®</button>
 						</form>
 				</div>
+				<%@include file="../preview_img.jsp" %>
 			</div>
 		</div>
 	</div>

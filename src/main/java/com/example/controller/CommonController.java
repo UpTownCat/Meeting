@@ -95,12 +95,6 @@ public class CommonController {
 	@RequestMapping(value = "/{photo}/photo")
 	public void getPhoto(@PathVariable String photo,
 			HttpServletResponse response) {
-		try {
-			System.out.println(new String(photo.getBytes("iso-8859-1"), "utf-8"));
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		String photoLocation = CommonUtil.getConfigString("photoLocation");
 		FileInputStream inputStream = null;
 		OutputStream outputStream = null;

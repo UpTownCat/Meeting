@@ -111,36 +111,11 @@ String path = request.getContextPath();
 				</table>
 			</div>
 			<div class="panel-footer">
-				<button class="btn btn-primary" data-toggle="collapse"
-					data-target="#collapse" id="btn">
-					增加会议室<span id="icon" class="glyphicon glyphicon-chevron-down"></span>
-				</button>
+				<a class="btn btn-primary" href="/meeting/room/add">
+					增加会议室<span id="icon" class="glyphicon glyphicon-plus"></span>
+				</a>
 				<div class="pull-right">
 					<%@include file="../page.jsp" %>
-				</div>
-			</div>
-			<div class="collapse" id="collapse">
-				<div class="well">
-					<form class="form-inline" action="/meeting/room/add" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="index"
-							value="${size == 5 ? page.index + 1 : page.index }">
-						<div class="form-group">
-							<label class="control-label">编号</label> <input
-								class="form-control" name="number" type="text">
-						</div>
-						<div class="form-group">
-							<label class="control-label">地点</label> <input
-								class="form-control" name="location" type="text">
-						</div>
-						<div class="form-group">
-							<label class="control-label">容量</label> <input
-								class="form-control" name="capacity" type="text">
-						</div>
-						<div class="form-group">
-							<label class="control-label">照片</label> <input name="photo" type="file">
-						</div>
-						<button class="btn btn-primary" type="submit">确定</button>
-					</form>
 				</div>
 			</div>
 			<div class="modal fade" id="deleteModal" role="dialog" tabindex="-1">

@@ -103,42 +103,22 @@ public class ManagerController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addManager(String name, String password, String email, String phone,
-			Integer gender, Integer departmentId, MultipartFile photo) {
-		// String index = "";
-		// ServletContext context = req.getSession().getServletContext();
-		// String realPath = context.getRealPath("/resources/images/");
-		// MultipartResolver resolver = new CommonsMultipartResolver(context);
-		// if (resolver.isMultipart(req)) {
-		// MultipartHttpServletRequest request = resolver
-		// .resolveMultipart(req);
-		// MultipartFile file = request.getFile("photo");
-		// String name = file.getOriginalFilename();
-		// String fileName = System.currentTimeMillis()
-		// + new Random().nextInt(10000) + name;
-		// File f = new File(realPath + fileName);
-		// try {
-		// file.transferTo(f);
-		// } catch (IllegalStateException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// index = request.getParameter("index");
-		// // User user = getUser(request);
-		// // user.setPhoto(fileName);
-		// // userService.addUser(user);
-		// Manager manager = getManager(request);
-		// manager.setPhoto(fileName);
-		// managerService.addManager(manager);
-		// }
+			Integer gender, @RequestParam(value="departemntId", required=false) String departmentId, MultipartFile photo) {
+		//保存文件并获得文件存的文件名
 		String fileName = CommonUtil.saveFile(photo, CommonUtil.getConfigString("photoLocation"),1);
-		Manager manager = new Manager(gender, phone, password, name, fileName, null);
+//		System.out.println(fileName);
 		Department department = new Department();
-		department.setId(departmentId);
-		manager.setDepartment(department);
+		if(departmentId != null && departmentId.length() != 0) {
+			department.setId(Integer.parseInt(departmentId));	
+		}
+//		Manager manager = new Manager(gender, phone, password, name, fileName, email, department.getId() == 0 ? null : department);
+		Manager manager = new Manager();
+		manager.setName(name);
+		manager.setPhone(fileName);
 		manager.setEmail(email);
+		manager.setPassword(password);
+		manager.setGender(gender);
+		manager.setDepartment(department.getId() == 0 ? null : department);
 		managerService.addManager(manager);
 		return LIST_URL + "?index=" + 9999;
 	}
@@ -641,19 +621,19 @@ public class ManagerController {
 	 * @param request
 	 * @return
 	 */
-	private Manager getManager(MultipartHttpServletRequest request) {
-		String name = request.getParameter("name");
-		String phone = request.getParameter("phone");
-		String password = request.getParameter("password");
-		int departmentId = Integer.parseInt(request
-				.getParameter("departmentId"));
-		Manager manager = new Manager(1, phone, password, name, "", null);
-		Department department = new Department();
-		department.setId(departmentId);
-		;
-		manager.setDepartment(department);
-		return manager;
-	}
+//	private Manager getManager(MultipartHttpServletRequest request) {
+//		String name = request.getParameter("name");
+//		String phone = request.getParameter("phone");
+//		String password = request.getParameter("password");
+//		int departmentId = Integer.parseInt(request
+//				.getParameter("departmentId"));
+//		Manager manager = new Manager(1, phone, password, name, "", null);
+//		Department department = new Department();
+//		department.setId(departmentId);
+//		;
+//		manager.setDepartment(department);
+//		return manager;
+//	}
 
 	@Transactional
 	private void finishMeeting(Meeting meeting) {
