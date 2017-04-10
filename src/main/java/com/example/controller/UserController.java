@@ -253,7 +253,6 @@ public class UserController {
 		Record record = recordService.selectRecordById(id);
 		String realFile = record.getRealFile();
 		response.setCharacterEncoding("gbk");
-		System.out.println(record.getFile());
 		try {
 			response.setHeader("Content-Disposition",
 					"attachment;filename="

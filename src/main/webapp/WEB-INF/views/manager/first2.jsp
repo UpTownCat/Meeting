@@ -103,7 +103,12 @@
 						  								<c:forEach items="${department.users }" var="user" begin="${status.index * 5 }" end="${(status.index - 0 + 1) * 5 - 1 }">
 											  				<td>
 											  					<input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >
-											  					${user.name }
+											  					<c:if test="${user.password == null }">
+											  						${user.name }(部门经理)
+											  					</c:if>
+											  					<c:if test="${user.password != null }">
+											  						${user.name }
+											  					</c:if>
 											  				</td>
 											  			</c:forEach>
 						  							</c:if>
@@ -119,23 +124,26 @@
 						  									<td>
 						  										<c:if test="${tag == 1 }">
 						  											<input type="checkbox" name="userIds" value="${user.id }" checked="checked" class="d${department.id }">
-												  					${user.name }
+												  					<c:if test="${user.password == null }">
+												  						${user.name }(部门经理)
+												  					</c:if>
+												  					<c:if test="${user.password != null }">
+												  						${user.name }
+												  					</c:if>
 						  										</c:if>
 						  										<c:if test="${tag == 0 }">
 						  											<input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }">
-												  					${user.name }
+												  					<c:if test="${user.password == null }">
+												  						${user.name }(部门经理)
+												  					</c:if>
+												  					<c:if test="${user.password != null }">
+												  						${user.name }
+												  					</c:if>
 						  										</c:if>
 						  									</td>
 						  								</c:forEach>
 						  							</c:if>
 						  						</tr>
-<!-- 						  						<tr> -->
-<!-- 						  							<c:forEach items="${department.users }" var="user" begin="${status.index * 5 }" end="${(status.index - 0 + 1) * 5 - 1 }"> -->
-<!-- 										  				<td> -->
-<!-- 										  					<input type="checkbox" name="userIds" value="${user.id }" >${user.name } -->
-<!-- 										  				</td> -->
-<!-- 										  			</c:forEach> -->
-<!-- 						  						</tr> -->
 						  					</c:forEach>
 						  				</tbody>
 						  			</table>
@@ -155,7 +163,12 @@
 						  								<c:forEach items="${department.users }" var="user" begin="${status2.index * 5 }" end="${(status2.index - 0 + 1) * 5 - 1 }">
 											  				<td>
 											  					<input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }">
-											  					${user.name }
+											  					<c:if test="${user.password == null }">
+											  						${user.name }(部门经理)
+											  					</c:if>
+											  					<c:if test="${user.password != null }">
+											  						${user.name }${user.password + "----1"}
+											  					</c:if>
 											  				</td>
 											  			</c:forEach>
 						  							</c:if>
@@ -171,11 +184,21 @@
 						  									<td>
 						  										<c:if test="${tag == 1 }">
 						  											<input type="checkbox" name="userIds" value="${user.id }" checked="checked" class="d${department.id }">
-												  					${user.name }
+												  					<c:if test="${user.password == null }">
+												  						${user.name }(部门经理)
+												  					</c:if>
+												  					<c:if test="${user.password != null }">
+												  						${user.name }
+												  					</c:if>
 						  										</c:if>
 						  										<c:if test="${tag == 0 }">
 						  											<input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }">
-												  					${user.name }
+												  					<c:if test="${user.password == null }">
+												  						${user.name }(部门经理)
+												  					</c:if>
+												  					<c:if test="${user.password != null }">
+												  						${user.name }
+												  					</c:if>
 						  										</c:if>
 						  									</td>
 						  								</c:forEach>

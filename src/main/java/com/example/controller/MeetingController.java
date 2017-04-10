@@ -88,7 +88,13 @@ public class MeetingController {
 			return "meeting/list";
 		}
 	}
-	
+	/**
+	 * 查看会议
+	 * @param page
+	 * @param session
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value="/mine", method=RequestMethod.GET)
 	public String mineMeeting(Page page, HttpSession session, Map<String, Object> map) {
 		String role = session.getAttribute("role").toString();
@@ -100,6 +106,13 @@ public class MeetingController {
 			User user = (User)session.getAttribute("user");
 			List<Invitation> invitations = invitatoinService.selectInvitaionByUserIdByPage(page, user.getId());
 			map.put("invitations", invitations);
+		}else {
+			if(role.equals("2")) {
+				Manager manager = (Manager)session.getAttribute("manager");
+				User user = userService.selectUserByPhone(manager.getPhone());
+				List<Invitation> invitations = invitatoinService.selectInvitaionByUserIdByPage(page, user.getId());
+				map.put("invitations", invitations);
+			}
 		}
 		map.put("page", page);
 		return "/meeting/mine";
@@ -286,21 +299,26 @@ public class MeetingController {
 	@RequestMapping(value="/{id}/validate", method=RequestMethod.GET, produces="application/json;charset=gbk")
 	@ResponseBody
 	public ResultDto getValidateResult(@PathVariable Integer id, HttpSession session) {
-		System.out.println("init");
 		ResultDto resultDto = new ResultDto();
+		resultDto.setTag(false);
 		User user = (User) session.getAttribute("user");
-		if(user == null) {
-			resultDto.setTag(true);
-			return resultDto;
-		}
 		int userId = user.getId();
 		Invitation invitation = invitatoinService.selectInvitationByUserIdAndMeetingId(userId, id);
 		if(invitation == null) {
 			resultDto.setTag(false);
 			resultDto.setContent("");
+			List<Record> records = recordService.selectRecordByMeetingId(id);
+			if(records != null) {
+				for(int i = 0; i < records.size(); i++) {
+					if(records.get(i).getUser().getId() == userId) {
+						resultDto.setTag(true);
+					}
+				}
+			}
 		}else {
 			resultDto.setTag(true);
 		}
+		
 		return resultDto;
 	}
 	

@@ -23,4 +23,19 @@ public class UserDaoTest extends BasicTest {
 		logger.info("num = {}", num);
 		logger.info("user = {}", user);
 	}
+	
+	@Test
+	public void selectUserByIdTest() {
+		int id = 34;
+		User user = userDao.selectUserById(id);
+		System.out.println(user.getPassword() == null);
+		
+	}
+	
+	@Test
+	public void userLoginTest() {
+		String phone = "1234";
+		User user = userDao.selectUserByPhone(phone);
+		System.out.println(user);
+	}
 }

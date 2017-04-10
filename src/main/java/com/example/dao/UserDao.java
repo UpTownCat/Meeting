@@ -20,6 +20,8 @@ public interface UserDao {
 	 * @return
 	 */
 	int deleteUser(int id);
+	
+	void deleteUserByPhone(String phone);
 	/**
 	 * 更新用户信息
 	 * @param user
@@ -42,4 +44,5 @@ public interface UserDao {
 	
 	List<User> selectAllByPage(Page page);
 	User selectUserByPhoneAndPassword(@Param("phone")String phone, @Param("password")String password);
+	User selectUserByPhone(String phone);
 }

@@ -36,7 +36,9 @@
 			if(departmentId > 0) {
 				$.get("/meeting/user/" + departmentId + "/department", {}, function(data){
 					for(var i = 0; i < data.length; i++) {
-						sub.append("<option value='" + data[i].id +  "'>" + data[i].name + "</option>");
+						if(data[i].password != null) {
+							sub.append("<option value='" + data[i].id +  "'>" + data[i].name + "</option>");
+						}
 					}
 				})
 			}
@@ -101,7 +103,14 @@
 														<tr>
 															<c:forEach items="${department.users }" var="user" begin="${status1.index * 5 }" end="${(status1.index - 0 + 1) * 5 - 1 }">
 																<c:if test="${invitations == null }">
-																	<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >${user.name }</td>
+																	<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >
+																		<c:if test="${user.password == null }">
+													  						${user.name }(部门经理)
+													  					</c:if>
+													  					<c:if test="${user.password != null }">
+													  						${user.name }
+													  					</c:if>
+																	</td>
 																</c:if>
 																<c:if test="${invitations != null }">
 																	<c:set var="tag" scope="request" value="0"></c:set>
@@ -111,10 +120,24 @@
 																		</c:if>
 																	</c:forEach>
 																	<c:if test="${tag == 0 }">
-																		<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >${user.name }</td>
+																		<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >
+																			<c:if test="${user.password == null }">
+														  						${user.name }(部门经理)
+														  					</c:if>
+														  					<c:if test="${user.password != null }">
+														  						${user.name }
+														  					</c:if>
+																		</td>
 																	</c:if>	
 																	<c:if test="${tag == 1 }">
-																		<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" checked="checked" >${user.name }</td>
+																		<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" checked="checked" >
+																			<c:if test="${user.password == null }">
+														  						${user.name }(部门经理)
+														  					</c:if>
+														  					<c:if test="${user.password != null }">
+														  						${user.name }
+														  					</c:if>
+																		</td>
 																	</c:if>	
 																</c:if>
 															</c:forEach>
@@ -135,7 +158,14 @@
 														<tr>
 															<c:forEach items="${department.users }" var="user" begin="${status2.index * 5 }" end="${(status2.index - 0 + 1) * 5 - 1 }">
 																<c:if test="${invitations == null }">
-																	<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >${user.name }</td>
+																	<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >
+																		<c:if test="${user.password == null }">
+														  					${user.name }(部门经理)
+														  				</c:if> 
+														  				<c:if test="${user.password != null }">
+														  						${user.name }
+														  				</c:if>
+														  				</td>
 																</c:if>
 																<c:if test="${invitations != null }">
 																	<c:set var="tag" scope="request" value="0"></c:set>
@@ -145,7 +175,14 @@
 																		</c:if>
 																	</c:forEach>
 																	<c:if test="${tag == 0 }">
-																		<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >${user.name }</td>
+																		<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" >
+																			<c:if test="${user.password == null }">
+														  						${user.name }(部门经理)
+														  					</c:if>
+														  					<c:if test="${user.password != null }">
+														  						${user.name }
+														  					</c:if>
+																		</td>
 																	</c:if>	
 																	<c:if test="${tag == 1 }">
 																		<td><input type="checkbox" name="userIds" value="${user.id }" class="d${department.id }" checked="checked" >${user.name }</td>

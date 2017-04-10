@@ -18,4 +18,5 @@ public interface UserService {
 	List<Invitation> lookInvitation(int userId);
 	List<User> selectUserByDepartmentId(int id);
 	String selectUserNameById(int id);
+	User selectUserByPhone(String phone);
 }

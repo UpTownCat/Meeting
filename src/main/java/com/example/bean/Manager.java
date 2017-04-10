@@ -1,6 +1,6 @@
 package com.example.bean;
 
-public class Manager {
+public class Manager extends User {
 	private int id;
 	private int gender;
 	private String phone;
