@@ -69,7 +69,8 @@
 			meeting
 		on
 			(a.meeting_id = meeting.id)
-		where 1 = 1
+		where 
+			1 = 1
 	</select>
 	
 	<select id="selectInvitationByUserIdByDate" resultMap="invitationMap2">

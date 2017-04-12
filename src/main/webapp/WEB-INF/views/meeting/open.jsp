@@ -21,9 +21,9 @@ pageContext.setAttribute("partName", "meeting");
 <%@include file="../common2l.jsp"%>
 <script type="text/javascript">
 	$(function() {
-		common.init("", "");
+		common.init("meeting", "");
 		var index = "${page.index }";
-		var url = "/meeting/meeting/mine";
+		var url = "/meeting/meeting/open";
 		var total = "${page.total }";
 		page.init(6, index, total, url);
 		$("#forward").click(function(){
@@ -49,13 +49,6 @@ pageContext.setAttribute("partName", "meeting");
 			toIndex.val(index2);
 			form.submit();
 			return false;
-		});
-		
-		$(".state").change(function() {
-			var sIndex = this.selectedIndex;
-			var invitationId = $(this).attr("id");
-			var value = this.options[sIndex].value;
-			$.post("/meeting/invitation/" + invitationId.substring(1) + "/state?state=" + value, {_method : "PUT"}, function(data){});
 		})
 	})
 </script>
@@ -73,14 +66,45 @@ pageContext.setAttribute("partName", "meeting");
 			<div class="container col-lg-9" style="float:left; padding: 0 0">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3>需要参加的会议</h3> 
+					<h3>会议列表</h3> 
 				</div>
 				<div class="panel-body well">
-				<form class="navbar-form navbar-left" action="/meeting/meeting/mine" id="form">
+				<form class="navbar-form navbar-left" action="/meeting/meeting/open" id="form">
 					<input type="hidden" name="index" value="1" id="toIndex">
 				     <div class="form-group">
 					     <input type="text" class="form-control" name="searchContent" placeholder="会议主题" value="${page.searchContent }">
 				     </div>
+				     <c:if test="${role == 2 }">
+					     <div class="form-group">
+					     	<label>会议预约:</label>
+					     	<select class="form-control" name="appointment">
+					     		<c:if test="${page.appointment == 0 }">
+					     			<option value="0">默认</option>
+						     		<option value="1">预约通过</option>
+						     		<option value="2">预约失败</option>
+						     		<option value="3">审核中</option>
+					     		</c:if>
+					     		<c:if test="${page.appointment == 1 }">
+					     			<option value="0">默认</option>
+						     		<option value="1" selected="selected">预约通过</option>
+						     		<option value="2">预约失败</option>
+						     		<option value="3">未审核</option>
+					     		</c:if>
+					     		<c:if test="${page.appointment == 2 }">
+					     			<option value="0">默认</option>
+						     		<option value="1">预约通过</option>
+						     		<option value="2" selected="selected">预约失败</option>
+						     		<option value="3">未审核</option>
+					     		</c:if>
+					     		<c:if test="${page.appointment == 3 }">
+					     			<option value="0">默认</option>
+						     		<option value="1">预约通过</option>
+						     		<option value="2">预约失败</option>
+						     		<option value="3" selected="selected">未审核</option>
+					     		</c:if>
+					     	</select>
+					     </div>
+					  </c:if>
 				      <div class="form-group">
 				     	<label>会议状态:</label>
 				     	<select class="form-control" name="state">
@@ -139,55 +163,41 @@ pageContext.setAttribute("partName", "meeting");
 								<th>会议室</th>
 								<th>开始时间</th>
 								<th>结束时间</th>
-								<th></th>
-								<th>是否参加</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${invitations }" var="invitation">
+							<c:forEach items="${meetings }" var="meeting">
 								<tr>
-									<td>${invitation.meeting.title }${invitation.id }</td>
-									<td>${invitation.meeting.meetingRoom.number }</td>
+									<td>${meeting.title }</td>
+									<td>${meeting.meetingRoom.number }</td>
 									<td>
-										<fmt:formatDate value="${invitation.meeting.startTime}" pattern="yyyy-MM-dd HH:mm"/>
+										<fmt:formatDate value="${meeting.startTime}" pattern="yyyy-MM-dd HH:mm"/>
 									</td>
 									<td>
-										<fmt:formatDate value="${invitation.meeting.endTime}" pattern="yyyy-MM-dd HH:mm"/>
+										<fmt:formatDate value="${meeting.endTime}" pattern="yyyy-MM-dd HH:mm"/>
 									</td>
-									<td><a href="/meeting/meeting/${invitation.meeting.id }/detail" class="btn btn-info detail">详情</a></td>
-									<td>
-										<c:if test="${invitation.meeting.open == 0 }">
-											<select class="form-control state" id="i${invitation.id }">
-												<c:if test="${invitation.isAccess == 2 }">
-													<option value="2">不确定</option>
-													<option value="1">参加</option>
-													<option value="0">不参加</option>
-												</c:if>
-												<c:if test="${invitation.isAccess == 1 }">
-													<option value="2">不确定</option>
-													<option value="1" selected="selected">参加</option>
-													<option value="0">不参加</option>
-												</c:if>
-												<c:if test="${invitation.isAccess == 0 }">
-													<option value="2">不确定</option>
-													<option value="1">参加</option>
-													<option value="0" selected="selected">不参加</option>
-												</c:if>
-											</select>
-										</c:if>	
-										
-										<c:if test="${invitation.meeting.open == 1 }">
-												<c:if test="${invitation.isAccess == 2 }">
-													不确定
-												</c:if>
-												<c:if test="${invitation.isAccess == 1 }">
-													参加
-												</c:if>
-												<c:if test="${invitation.isAccess == 0 }">
-													不参加
-												</c:if>
-										</c:if>	
-									</td>
+									<td><a href="/meeting/meeting/${meeting.id }/detail" class="btn btn-info detail">详情</a></td>
+									<c:if test="${role == 2 }">
+										<td>
+											<c:if test="${meeting.isPass == 2 }">
+												<a class="btn btn-default disabled">审核中</a>
+											</c:if>
+											<c:if test="${meeting.isPass == 1 }">
+												<a class="btn btn-success discabled" disabled="true">预约通过</a>
+											</c:if>
+											<c:if test="${meeting.isPass == 0 }">
+												<a class="btn btn-warning disabled" disabled="true">预约失败</a>
+											</c:if>
+										</td>
+										<c:if test="${meeting.open == 0 }">
+											<td><a href="/meeting/manager/meeting/first1?id=${meeting.id }" class="btn btn-primary">修改</a></td>
+											<td><a href="#deleteModal" data-toggle="modal" data-whatever="${meeting.id},主题为： ' ${meeting.title } '  的会议" class="btn btn-danger">删除</a></td>
+										</c:if>
+										<c:if test="${meeting.open == 1 }">
+											<td><a class="btn btn-primary disabled" >修改</a></td>
+											<td><a class="btn btn-danger disabled" >删除</a></td>
+										</c:if>
+									</c:if>
 								</tr>
 							</c:forEach>
 						</tbody>

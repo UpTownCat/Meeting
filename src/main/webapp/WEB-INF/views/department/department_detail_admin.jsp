@@ -24,7 +24,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 <script type="text/javascript" src="../../resources/js/table2.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var departmentId = "${department.id }";
+		CalendarHandler.initialize(0, 0, 0);
 		var total = "${total }";
 		console.log(total);
 		page.init(6, 1, total, "");
@@ -128,9 +128,17 @@ pageContext.setAttribute("partName", "/meeting/user");
 
 <body>
 	<%@include file="../nav.jsp" %>
-	<div class="left" style="float: left; margin-top: 50px">
-		<%@include file="../menu.jsp" %>
-	</div>
+	<c:if test="${sessionScope.role == 3 }">
+		<div class="left" style="float: left; margin-top: 50px">
+			<%@include file="../menu.jsp" %>
+		</div>
+	</c:if>
+	<c:if test="${sessionScope.role == 2 }">
+		<div class="left" style="float: left; margin-top: 50px">
+			<%@include file="../calendar.jsp" %>
+			<%@include file="../notice.jsp"%>
+		</div>
+	</c:if>
 	<div class="container col-lg-9" style="margin-top: 50px; padding: 0 0">
 		<div class="panel panel-default">
 			<div class="panel-heading">

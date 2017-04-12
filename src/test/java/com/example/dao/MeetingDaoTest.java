@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.example.bean.Manager;
 import com.example.bean.Meeting;
 import com.example.bean.MeetingRoom;
+import com.example.bean.Page;
 
 public class MeetingDaoTest extends BasicTest {
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -38,5 +40,16 @@ public class MeetingDaoTest extends BasicTest {
 		logger.info("meeting = {}", meeting);
 		logger.info("room = {}", meeting.getMeetingRoom());
 		logger.info("manager = {}", meeting.getManager());
+	}
+	
+	@Test
+	public void selectMeetingByManagerIdByPageTest() {
+		int id = 1;
+		Page page = new Page();
+		page.setIndex(1);
+		List<Meeting> meetings = meetingDao.selectMeetingByManagerIdByPage(page, id);
+		for(int i = 0; i < meetings.size(); i++) {
+			logger.info("meeting = {}", meetings.get(i));
+		}
 	}
 }

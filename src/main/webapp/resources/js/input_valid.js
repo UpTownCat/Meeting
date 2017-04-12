@@ -1,5 +1,5 @@
 var valid = {
-		init : function() {
+		init : function(meetingId) {
 			$("#ok")
 			.click(
 					function() {
@@ -145,14 +145,14 @@ var valid = {
 						var roomId = room.options[room.selectedIndex].value;
 						var tag = 0;
 						$.ajax({
-							url : "/meeting/room/valid?id="+roomId + "&startTime="+v1,
+							url : "/meeting/room/valid?id="+roomId + "&startTime="+v1 + "&meetingId=" + meetingId,
 							async : false,
 							success : function(data) {
 								if(data == 0) {
 									tag = 1;
 									$.confirm({
 										backgroundDismiss: true,
-										title: "输入有误",
+										title: "会议提示",
 										content: "该时间段该会议室已经有会议要召开， 请重新选择会议室或时间",
 										buttons: {
 											"关闭": function(){},
@@ -170,8 +170,15 @@ var valid = {
 							return false;
 						}else {
 							if(tag == 2) {
-								$("#msg").html("该时间段该会议室已经有预约， 有可能不能成功预约, 您是否要继续预约?")
-								$("#myModal").modal({show : true});
+								$.confirm({
+									backgroundDismiss: false, 
+									title: "会议提示", 
+									content: "该时间段该会议室已经有预约， 有可能不能成功预约, 您是否要继续预约?",
+									buttons: {
+										"取消": function(){},
+										"确定": function(){$("#form").submit();}
+									}
+								})
 								return false;
 							}
 						}

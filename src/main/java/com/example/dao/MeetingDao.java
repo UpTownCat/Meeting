@@ -43,4 +43,6 @@ public interface MeetingDao {
 			@Param("meetingRoomId") int meetingRoomId,
 			@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 	Meeting selectMeetingByDate(@Param("startTime")Date startTime, @Param("endTime") Date endTime);
+	
+	List<Meeting> selectMeetingByManagerIdByPage(Page page, @Param("userId")int managerId);
 }

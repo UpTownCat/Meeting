@@ -26,7 +26,8 @@
 	$(
 			function() {
 				CalendarHandler.initialize(0, 0, 0);
-				valid.init();
+				var meetingId = "${meeting.id }";
+				valid.init(meetingId.length == 0 ? 0 : meetingId);
 				var total = "${sessionScope.totalPage }";
 // 				var total = 10;
 				page.init(6, 1, total, "");
@@ -44,10 +45,6 @@
 						$("#capacity").html("会议室的容量为：" + data);
 					})
 				});
-				
-				$("#ok2").click(function() {
-					$("#form").submit();
-				})
 				
 				$(".pageItem2").click(function(){
 					var href = $(this).find("a").attr("href");
@@ -352,26 +349,6 @@ td {
 						</tr>
 					</table>
 
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title">会议修改</h4>
-				</div>
-				<div class="modal-body">
-					<p id="msg"></p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary" id="ok2">确定</button>
 				</div>
 			</div>
 		</div>

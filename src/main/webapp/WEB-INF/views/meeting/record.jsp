@@ -171,7 +171,12 @@ pageContext.setAttribute("partName", "meeting");
 												<input type="hidden" name="state" value="${page.state }">
 												<input type="hidden" name="index" value="${page.index }">
 												<input name="document" type="file" id="f${record.id }">
-												<button class="btn btn-primary pull-right upload" style="margin-top: -30px" id="b${record.id }" >上传</button>
+												<c:if test="${record.meeting.open == 1 }">
+													<button class="btn btn-primary pull-right upload" style="margin-top: -30px" id="b${record.id }" >上传</button>
+												</c:if>
+												<c:if test="${record.meeting.open == 0 }">
+													<button class="btn btn-primary pull-right upload disabled" style="margin-top: -30px" id="b${record.id }" >上传</button>
+												</c:if>
 											</form>
 										</c:if>
 									</td>

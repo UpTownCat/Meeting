@@ -80,9 +80,7 @@ public class RoomViewController {
 	
 	@RequestMapping(value="/valid", method=RequestMethod.GET)
 	@ResponseBody
-	public int validateRoom(Integer id, String startTime) {
-		System.out.println(startTime);
-		System.out.println(id);
+	public int validateRoom(Integer id, String startTime, int meetingId) {
 		Calendar calendar = Calendar.getInstance();
 		int hour = Integer.parseInt(startTime.substring(startTime.length() - 5, startTime.length() - 3));
 		String date = startTime.substring(0, 10);
@@ -118,6 +116,9 @@ public class RoomViewController {
 					return 1;
 				}else {
 					//有会议且审核通过
+					if(meetingId != 0 && meetingId == meeting.getId()) {
+						return 1;
+					}
 					return 0;
 				}
 			}

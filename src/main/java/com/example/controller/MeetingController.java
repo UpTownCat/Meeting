@@ -117,6 +117,13 @@ public class MeetingController {
 		map.put("page", page);
 		return "/meeting/mine";
 	}
+	/**
+	 * 查看记录的会议
+	 * @param page
+	 * @param session
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value="/record", method=RequestMethod.GET)
 	public String recordMeeting(Page page, HttpSession session, Map<String, Object> map) {
 		if(page.getIndex() == 0) {
@@ -132,6 +139,19 @@ public class MeetingController {
 		map.put("page", page);
 		map.put("records", records);
 		return "/meeting/record";
+	}
+	
+	@RequestMapping(value="/open", method=RequestMethod.GET)
+	public String getOpenMeeting(Page page, HttpSession session, Map<String, Object> map) {
+		if(page.getIndex() == 0) {
+			page.setIndex(1);
+		}
+		page.setSize(6);
+		Manager manager = (Manager)session.getAttribute("manager");
+		List<Meeting> meetings = meetingService.selectMeetingByManagerIdByPage(page, manager.getId());
+		map.put("meetings", meetings);
+		map.put("page", page);
+		return "/meeting/open";
 	}
 	
 //	@RequestMapping(value="/judge", method=RequestMethod.GET)
