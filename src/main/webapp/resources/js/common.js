@@ -58,7 +58,15 @@ var common = {
 				$.ajax({url:validateUrl, cache:false, async:false, success:function(data) {
 					if(!data.tag){
 						myTag = "0";
-						alert("该会议没有邀请您， 您没有权限查看！");
+						console.log("11111111111");
+						$.confirm({
+							backgroundDismiss: true,
+							title: "提示",
+							content: "该会议没有邀请您， 您没有权限查看！",
+							buttons: {
+								"确定": function(){},
+							}
+						});
 					}
 				}});
 				if(myTag == "0")

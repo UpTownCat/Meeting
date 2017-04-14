@@ -1,183 +1,111 @@
-<%@ page language="java" import="java.util.*" pageEncoding="GBK"%>
-<%
-String path = request.getContextPath();
-%>
-
+<%@ page language="java" import="java.util.*" pageEncoding="gbk"%>
 <!DOCTYPE html>
 <html>
-  <head>
-    
-    <title>My JSP 'index.jsp' starting page</title>
-    
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-	<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
-	<script type="text/javascript" src="resources/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="resources/js/page.js"></script>
+  
+<!-- Mirrored from v3.bootcss.com/examples/signin/ by HTTrack Website Copier/3.x [XR&CO'2013], Sun, 26 Jan 2014 11:51:19 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="resources/images/meeting.jpg">
+
+    <title>Login</title>
+
+    <!-- Bootstrap core CSS -->
+  	    <link href="resources/css/bootstrap.min.css"  rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="resources/css/login.css" rel="stylesheet">
+    <script type="text/javascript" src="resources/js/jquery-1.9.1.min.js"></script>
+	<script type="application/javascript" src="resources/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="resources/js/autoMail.1.0.min.js"></script>
 	<script type="text/javascript">
-		$(function() {
-			var tag = 1;
-			var index = "${index }";
-			page.init(6, 1, 3, "/meeting/test");
-			var arr = ["早上:", "下午:", "晚上:"];
-			$("#test").click(function(){
-				var table = $("#table");
-				var trs = table.find("tr");
-				$.ajax({url:"/meeting/invitation/recent", data : {page : 1},  aysnc:false, success:function(data){
-					console.log(data.length);
-					for(var i = 0; i < data.length; i++) {
-						var tds = trs.eq(i + 1).find("td");
-						var userInvitationDto = data[i];
-						console.log(userInvitationDto.name);
-						var dayInvitationDtos = userInvitationDto.dayInvitationDtos;
-						tds.eq(0).html(userInvitationDto.name);
-						for(var j = 0; j < dayInvitationDtos.length; j++) {
-							var dayInvitationDto = dayInvitationDtos[j];
-							if(dayInvitationDto.hasMeeting == 0) {
-								continue;
-							}
-							var td = tds.eq(j + 1);
-							var str = "";
-							var dtos = dayInvitationDto.dtos;
-							for(var l = 0; l < dtos.length; l++) {
-								var dto = dtos[l];
-								if(dto.id != 0) {
-									str += arr[l];
-									str += dto.title;
-									str += "</br>"
-								}
-							}
-							console.log(str);
-							td.html(str);
-					}
-					}
-				}})
-			})
-			
+	$(function() {
+		$('#email1').autoMail(
+				{
+					emails : [ 'qq.com', '163.com', '126.com', 'sina.com',
+							'sohu.com', 'yahoo.cn' ]
+				});
 		})
 	</script>
-	<style type="text/css">
-		td{
-			width : 12.5%;
-			height: 50px;
-		}
-	</style>
-  </head>
-  
-  <body>
-	<ul class="pagination" id="pageContent">
- 	</ul>
- 	
- 	<div class="container">
- 		<form class="form" action="/meeting/common/login" method="post">
- 			<div class="form-group">
- 				<label class="control-lable">手机号</label>
- 				<input type="text" name="phone" class="form-control">
- 			</div>
- 			<div class="form-group">
- 				<label class="control-lable">密码</label>
- 				<input type="text" name="password" class="form-control">
- 			</div>
- 			<div class="form-group">
-				<div class="radio">
-					<label> <input type="radio" name="tag"
-						id="optionsRadios1" value="1" checked> 员工
-					</label>
-				</div>
-				<div class="radio">
-					<label> <input type="radio" name="tag"
-						id="optionsRadios2" value="2"> 部门经理
-					</label>
-				</div>
-				<div class="radio">
-					<label> <input type="radio" name="tag"
-						id="optionsRadios3" value="3"> 管理员
-					</label>
-				</div>
-			</div>
-			<button type="submit" class="btn btn-primary" id="btn">登陆</button>
- 		</form>
- 			<button type="button" class="btn btn-danger" id="test">Test</button>
- 	</div>
-	<table class="table table-bordered table-hover text-center" id="table">
-		<tr>
-			<th>参会人员</th>
-			<th>1</th>
-			<th>2</th>
-			<th>3</th>
-			<th>4</th>
-			<th>5</th>
-			<th>6</th>
-			<th>7</th>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-	</table>
 
-</body>
+  </head>
+
+  <body>
+    <div class="container">
+	  <center><img alt="" src="resources/images/meetingLogin.png"></center>
+      <form class="form-signin" role="form" method="post" action="/meeting/common/login">
+        <input type="text" name="email" class="form-control" placeholder="请输入邮箱" id="email1">
+        <span name="emailValidate" style="color: red"></span>
+        <input type="password" name="password" class="form-control" placeholder="密码">
+      	<span name="passwordValidate" style="color: red"></span>
+       <center>
+  		<label class="radio">
+   		员工 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="tag" id="position" value="1" checked>
+   		部门经理 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="tag" id="position1" value="2" >
+   		管理员 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="tag" id="position2" value="3" >
+    	</label>
+    	</center> 
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="登陆">
+      </form>
+
+    </div> <!-- /container -->
+
+  </body>
+  <script type="text/javascript">
+  		$(function(){
+  			$(":submit").click(function(){
+  				var email = $("[name=email]").val();
+  				if(email==""||email.indexOf(' ')!=-1){
+  					$("[name=emailValidate]").text("邮箱不能为空!");
+  					$("[name=email]").focus();
+					return false;
+  				}
+  				else if(!(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(email))){
+  					$("[name=emailValidate]").text("邮箱不合法");
+  					$("[name=email]").focus();
+  					return false;
+  				}else{
+  					$("[name=emailValidate]").text("");
+  				}
+  				var pwd = $("[name=password]").val();
+				if(pwd == ""||pwd.indexOf(' ')!=-1){
+					$("[name=passwordValidate]").text("密码不能为空或包含空格");
+					$("[name=password]").focus();
+					return false;
+				}else{
+					$("[name=passwordValidate]").text("");
+				}
+				
+  				//都合法填写完毕后,将密码在前台加密
+  				var pwd=$(":password").val();
+				var data={"password":pwd};
+				var url = "/meeting/common/md5"
+				$.ajax({
+						async : false,
+						cache : false,
+						success: function(data){
+							$("[name=password]").val(data);
+						},
+						type : "POST",
+						url : url,
+						data : data
+					});
+					//获取当前页面被选中的的单选框的值
+					var radioValue = $("input[type='radio']:checked").val()
+  					//现在根据页面上radio的值,来决定去哪个控制器中去进行登录验证
+  					var loginUrl = "";
+  					if(radioValue==1){
+  						loginUrl = "user/login";
+  					}else if(radioValue==2){
+  						loginUrl = "manager/login";
+  					}else{
+  						loginUrl = 	"admin/login";
+  					}
+  			});
+  		});
+  </script>
+  
 </html>

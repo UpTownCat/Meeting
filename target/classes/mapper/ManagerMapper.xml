@@ -57,7 +57,7 @@
 		from
 		manager
 		where
-		phone = #{phone} and password = #{password}
+		email = #{phone} and password = #{password}
 	</select>
 
 	<select id="selectManagerByDepartmentId" resultType="Manager">

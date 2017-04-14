@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jdk.nashorn.internal.runtime.RewriteException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,6 @@ import com.example.bean.User;
 public class HelloWorldController {
 	@RequestMapping("/hello")
 	public String hello(){
-		
 		return "hello";
 	}
 	@RequestMapping("/test")

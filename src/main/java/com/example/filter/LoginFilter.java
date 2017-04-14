@@ -29,7 +29,7 @@ public class LoginFilter implements Filter {
 		String uri = req.getRequestURI();
 		if(!uri.equals("/meeting/") && !uri.equals("/meeting/index.jsp") && !uri.equals("/meeting")) {
 			if(session.getAttribute("role") == null && !uri.equals("/meeting/common/login")) {
-				((HttpServletResponse)response).sendRedirect("/meeting");
+				((HttpServletResponse)response).sendRedirect("/meeting/index.jsp");
 				return ;
 			}
 		}

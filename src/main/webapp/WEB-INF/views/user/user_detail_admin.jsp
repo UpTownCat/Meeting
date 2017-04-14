@@ -22,6 +22,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 <%@include file="../common3l.jsp"%>
 <script type="text/javascript">
 		$(function() {
+			CalendarHandler.initialize(0, 0, 0);
 			var index = "${page.index }";
 			var total = "${page.total }";
 			var url = "/meeting/user/list";
@@ -38,7 +39,13 @@ pageContext.setAttribute("partName", "/meeting/user");
 <body>
 	<%@include file="../nav.jsp" %>
 	<div class="left" style="float: left; margin-top: 50px">
-		<%@include file="../menu.jsp" %>
+		<c:if test="${sessionScope.role == 3}">
+			<%@include file="../menu.jsp" %>
+		</c:if>
+		<c:if test="${sessionScope.role != 3}">
+			<%@include file="../calendar.jsp" %>
+			<%@include file="../notice.jsp" %>
+		</c:if>
 	</div>
 	<div class="container col-lg-9" style="margin-top: 50px; padding: 0 0">
 		<div class="panel panel-default">

@@ -72,7 +72,7 @@
 		from
 			user
 		where
-			phone = #{phone} and password = #{password}
+			email = #{phone} and password = #{password}
 	</select>
 
 	<select id="selectUserByDepartmentId" resultType="User">

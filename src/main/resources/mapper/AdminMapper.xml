@@ -9,6 +9,6 @@
 		from
 			admin
 		where 
-			phone = #{phone} and password = #{password}
+			email = #{phone} and password = #{password}
 	</select>
 </mapper>

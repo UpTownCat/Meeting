@@ -79,7 +79,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th><input type="checkbox">全选</th>
+						
 							<th>姓名</th>
 							<th>电话</th>
 							<th>邮箱</th>
@@ -92,7 +92,6 @@ pageContext.setAttribute("partName", "/meeting/user");
 					<tbody>
 						<c:forEach items="${users }" var="user" varStatus="status">
 							<tr>
-								<td><input type="checkbox">选择</td>
 								<td>${user.name }</td>
 								<td>${user.phone }</td>
 								<td>${user.email }</td>

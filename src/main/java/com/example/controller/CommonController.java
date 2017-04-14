@@ -39,9 +39,9 @@ public class CommonController {
 	@Autowired
 	private CommonService commonService;
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String userLogin(String phone, String password, Integer tag, HttpSession session) {
+	public String userLogin(String email, String password, Integer tag, HttpSession session) {
 		if(tag == 1) {
-			User user = userService.loginUser(phone, password);
+			User user = userService.loginUser(email, password);
 			if(user != null) {
 				session.setAttribute("user", user);
 				session.setAttribute("role", 1);
@@ -51,7 +51,7 @@ public class CommonController {
 			}
 		}else {
 			if(tag == 2) {
-				Manager manager = mananManagerService.loginManager(phone, password);
+				Manager manager = mananManagerService.loginManager(email, password);
 				if(manager == null) {
 					return "redirect:/";
 				}else {
@@ -60,7 +60,7 @@ public class CommonController {
 					return "redirect:/meeting/list?state=3";
 				}
 			}else {
-				Admin admin = adminService.loginAdmin(phone, password);
+				Admin admin = adminService.loginAdmin(email, password);
 				if(admin == null) {
 					return "redirect:/";
 				}else {
