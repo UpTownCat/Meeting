@@ -2,11 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
+			<c:if test="${sessionScope.role == 3 }">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/meeting/index.jsp">会议管理系统后台管理</a>
+				</div>
+			</c:if>
 			<c:if test="${sessionScope.role != 3 }">
 				<div class="navbar-header">
 					<a class="navbar-brand" href="/meeting/index.jsp">会议管理系统</a>
 				</div>
-					 <ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right">
 			 	<li><a href="/meeting/meeting/list?state=3">会议显示</a></li>
 			 	<li><a href="/meeting/room/list">会议室显示</a></li>
 		       	<c:if test="${sessionScope.role == 2 }">
@@ -34,11 +39,6 @@
 	          </ul>
 			</c:if>
 			
-			<c:if test="${sessionScope.role == 3 }">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="/meeting/index.jsp">会议管理系统后台管理</a>
-				</div>
-			</c:if>
 			
 			<div class="modal fade" id="reset" role="dialog" tabindex="-1">
 				<div class="modal-dialog">
@@ -62,5 +62,45 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="modal fade" id="noticeModal" role="dialog" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 id="msg2">发布公告</h4>
+						</div>
+						<div class="modal-body">
+							<label>内容:</label>
+							<textarea rows="6" cols="20" class="form-control" id="noticeContent"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary"
+								data-dismiss="modal">取消</button>
+							<button type="button" class="btn btn-danger" id="noticeSubmit" data-dismiss="modal">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 </div>
+
+<script type="text/javascript">
+	$(function(){
+		$("#noticeSubmit").click(function() {
+			var content = $("#noticeContent").val();
+			if(content.length == 0) {
+				common.remind("公告内容不能为空！");
+				return false;
+			} 
+			content = encodeURI(content, "utf-8");
+			$.post("/meeting/common/notice", {"content": content}, function(data) {
+				if(data == 1) {
+					common.remind("发布成功！");
+				}else {
+					common.remind("发布失败！");
+				}
+			})
+		})
+	})
+</script>

@@ -91,3 +91,8 @@ create table related_equipment(
 alter table meeting drop foreign key user_id_fk2;
 alter table meeting change user_id manager_id int not null;
 alter table meeting add constraint manager_id_fk foreign key references manager(id);
+
+create table notice(
+	id int auto_increment primary key, 
+	content varchar(1000)
+) engine=InnoDB, default charset=gbk, comment "¹«¸æ±í"

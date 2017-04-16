@@ -57,6 +57,7 @@
 									<a href="/meeting/manager/list" class="list-group-item">部门经理列表</a></span>
 									<a href="/meeting/department/list" class="list-group-item">部门列表</a></span>
 									<a href="/meeting/equipment/list" class="list-group-item">会议设备列表</a></span>
+									<a href="#noticeModal" class="list-group-item" data-toggle="modal">发布公告</a></span>
 								</div>
 							</div>
 						</div>

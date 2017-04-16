@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bean.Admin;
 import com.example.bean.Manager;
+import com.example.bean.Notice;
 import com.example.bean.User;
 import com.example.service.AdminService;
 import com.example.service.CommonService;
 import com.example.service.ManagerService;
+import com.example.service.NoticeService;
 import com.example.service.UserService;
 import com.example.util.CommonUtil;
 @Controller
@@ -38,6 +42,9 @@ public class CommonController {
 	private AdminService adminService;
 	@Autowired
 	private CommonService commonService;
+	@Autowired
+	private NoticeService noticeSerivce;
+	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String userLogin(String email, String password, Integer tag, HttpSession session) {
 		if(tag == 1) {
@@ -66,7 +73,7 @@ public class CommonController {
 				}else {
 					session.setAttribute("role", 3);
 					session.setAttribute("admin", admin);
-					return "redirect:/meeting/list?state=3";
+					return "redirect:/meeting/list?index=1&searchContent=&appointment=3&state=2&time=0";
 				}
 			}
 		}
@@ -177,6 +184,29 @@ public class CommonController {
 		System.out.println(password);
 		String md5 = DigestUtils.md5DigestAsHex(password.getBytes());
 		return md5;
+	}
+	
+	@RequestMapping(value="/notice", method=RequestMethod.POST)
+	@ResponseBody
+	@Transactional
+	public int addNotice(String content) {
+		try {
+			content = URLDecoder.decode(content, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Notice notice = new Notice(1, content);
+		noticeSerivce.updateNotice();
+		noticeSerivce.addNotice(notice);
+		return 1;
+	}
+	
+	@RequestMapping(value="/notice", method=RequestMethod.GET)
+	@ResponseBody
+	public Notice getNotice() {
+		Notice notice = noticeSerivce.selectNotice();
+		return notice;
 	}
 	
 }
