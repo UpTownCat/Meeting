@@ -88,4 +88,10 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectUserByPhone(phone);
 	}
 
+	@Override
+	public User selectIdByPhone(String phone) {
+		// TODO Auto-generated method stub
+		return userDao.selectIdByPhone(phone);
+	}
+
 }

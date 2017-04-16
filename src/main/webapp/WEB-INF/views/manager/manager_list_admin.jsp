@@ -74,6 +74,7 @@ pageContext.setAttribute("partName", "manager");
 							<th></th>
 							<th></th>
 							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -84,6 +85,7 @@ pageContext.setAttribute("partName", "manager");
 								<td>${user.email }</td>
 								<td>${user.department.name}</td>
 								<td><a class="btn btn-info" href="/meeting/manager/${user.id }/detail">详情</a></td>
+								<td><a class="btn btn-primary" href="#updateModal" data-toggle="modal" data-whatever="${user.id },${user.name }">重置密码</a></td>
 								<td><a class="btn btn-primary"
 									href="/meeting/${partName }/${user.id }/update?index=${page.index }">更新</a></td>
 								<td><a class="btn btn-danger" href="#deleteModal"
@@ -92,6 +94,11 @@ pageContext.setAttribute("partName", "manager");
 						</c:forEach>
 					</tbody>
 				</table>
+			</div>
+			<div class="panel-footer">
+				<a class="btn btn-primary" href="/meeting/manager/add">
+					增加部门经理<span id="icon" class="glyphicon glyphicon-plus"></span>
+				</a>
 				<div class="pull-right">
 					<%@include file="../page.jsp" %>
 				</div>
@@ -99,7 +106,7 @@ pageContext.setAttribute("partName", "manager");
 			<div class="modal fade" id="deleteModal" role="dialog" tabindex="-1">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div calss="modal-header"></div>
+						<div class="modal-header"></div>
 						<div class="modal-body">
 							<h3 id="msg"></h3>
 						</div>
@@ -111,10 +118,30 @@ pageContext.setAttribute("partName", "manager");
 					</div>
 				</div>
 			</div>
+			
+			<div class="modal fade" id="updateModal" role="dialog" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 id="msg2"></h4>
+						</div>
+						<div class="modal-body">
+							<br>
+							<label>新密码:</label>
+							<input type="password" class="form-control" id="password">
+							<input type="hidden" id="real_password">
+							<input type="hidden" id="tag" value="2">
+							<input type="hidden" id="id" value="">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary"
+								data-dismiss="modal">取消</button>
+							<button type="button" class="btn btn-danger" id="resetPassword" data-dismiss="modal">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<a class="btn btn-primary" href="/meeting/manager/add">
-			增加部门经理<span id="icon" class="glyphicon glyphicon-plus"></span>
-				</a>
 	</div>
 </body>
 </html>

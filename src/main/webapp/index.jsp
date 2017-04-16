@@ -18,11 +18,15 @@
 
     <!-- Custom styles for this template -->
     <link href="resources/css/login.css" rel="stylesheet">
+    <link href="resources/css/jquery-confirm.css" rel="stylesheet">
     <script type="text/javascript" src="resources/js/jquery-1.9.1.min.js"></script>
 	<script type="application/javascript" src="resources/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="resources/js/autoMail.1.0.min.js"></script>
+	<script type="text/javascript" src="resources/js/common.js"></script>
+	<script type="text/javascript" src="resources/js/jquery-confirm.js"></script>
 	<script type="text/javascript">
 	$(function() {
+		common.init("", "");
 		$('#email1').autoMail(
 				{
 					emails : [ 'qq.com', '163.com', '126.com', 'sina.com',
@@ -38,9 +42,8 @@
 	  <center><img alt="" src="resources/images/meetingLogin.png"></center>
       <form class="form-signin" role="form" method="post" action="/meeting/common/login">
         <input type="text" name="email" class="form-control" placeholder="请输入邮箱" id="email1">
-        <span name="emailValidate" style="color: red"></span>
-        <input type="password" name="password" class="form-control" placeholder="密码">
-      	<span name="passwordValidate" style="color: red"></span>
+        <input type="password" id="password" class="form-control" placeholder="密码">
+        <input type="hidden" name="password" id="real_password">
        <center>
   		<label class="radio">
    		员工 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="tag" id="position" value="1" checked>
@@ -48,64 +51,11 @@
    		管理员 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="tag" id="position2" value="3" >
     	</label>
     	</center> 
-        <input class="btn btn-lg btn-primary btn-block" type="submit" value="登陆">
+        <input class="btn btn-lg btn-primary btn-block" type="submit" id="submit" value="登陆">
       </form>
 
     </div> <!-- /container -->
 
   </body>
-  <script type="text/javascript">
-  		$(function(){
-  			$(":submit").click(function(){
-  				var email = $("[name=email]").val();
-  				if(email==""||email.indexOf(' ')!=-1){
-  					$("[name=emailValidate]").text("邮箱不能为空!");
-  					$("[name=email]").focus();
-					return false;
-  				}
-  				else if(!(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(email))){
-  					$("[name=emailValidate]").text("邮箱不合法");
-  					$("[name=email]").focus();
-  					return false;
-  				}else{
-  					$("[name=emailValidate]").text("");
-  				}
-  				var pwd = $("[name=password]").val();
-				if(pwd == ""||pwd.indexOf(' ')!=-1){
-					$("[name=passwordValidate]").text("密码不能为空或包含空格");
-					$("[name=password]").focus();
-					return false;
-				}else{
-					$("[name=passwordValidate]").text("");
-				}
-				
-  				//都合法填写完毕后,将密码在前台加密
-  				var pwd=$(":password").val();
-				var data={"password":pwd};
-				var url = "/meeting/common/md5"
-				$.ajax({
-						async : false,
-						cache : false,
-						success: function(data){
-							$("[name=password]").val(data);
-						},
-						type : "POST",
-						url : url,
-						data : data
-					});
-					//获取当前页面被选中的的单选框的值
-					var radioValue = $("input[type='radio']:checked").val()
-  					//现在根据页面上radio的值,来决定去哪个控制器中去进行登录验证
-  					var loginUrl = "";
-  					if(radioValue==1){
-  						loginUrl = "user/login";
-  					}else if(radioValue==2){
-  						loginUrl = "manager/login";
-  					}else{
-  						loginUrl = 	"admin/login";
-  					}
-  			});
-  		});
-  </script>
   
 </html>

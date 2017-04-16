@@ -22,6 +22,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 <%@include file="../common3l.jsp"%>
 <script type="text/javascript">
 		$(function() {
+			CalendarHandler.initialize(0, 0, 0);
 			var photo = "${meetingRoom.photo }";
 			var url = "/meeting/common/" + encodeURI(photo) + "/photo";
 			console.log(url);
@@ -33,13 +34,14 @@ pageContext.setAttribute("partName", "/meeting/user");
 
 <body>
 	<%@include file="../nav.jsp" %>
-	<div class="left" style="float: left; margin-top: 50px">
-		<%@include file="../menu.jsp" %>
-	</div>
+	<%@include file="../menu2.jsp" %>
 	<div class="container col-lg-9" style="margin-top: 50px; padding: 0 0">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3>会议室详情</h3>
+				<c:if test="${sessionScope.role == 2 }">
+						<a class="btn btn-primary pull-right" style='margin-top: -40px' href="/meeting/manager/meeting/first1?roomId=${meetingRoom.id }">预约</a>
+				</c:if>
 			</div>
 			<div class="panel-body">
 				<div class="col-lg-7">

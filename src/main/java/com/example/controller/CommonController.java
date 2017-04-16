@@ -73,11 +73,11 @@ public class CommonController {
 	}
 	
 	@RequestMapping(value="/photo2", method=RequestMethod.POST)
-	public String updatePhoto(Integer id, int table, String file, int index, MultipartFile photo) {
+	public String updatePhoto(Integer id, int table, String file, MultipartFile photo) {
 		if(photo != null && photo.getOriginalFilename() != null) {
-			File f = new File(CommonUtil.getConfigString("photoLoattion") + "/" + file);
+			File f = new File(CommonUtil.getConfigString("photoLocation") + "/" + file);
 			if(f.exists()) {
-				FileUtils.deleteQuietly(f);
+				f.delete();
 			}
 			String fileName = CommonUtil.saveFile(photo, CommonUtil.getConfigString("photoLocation"), 1);
 			commonService.updatePhoto(id, table, fileName);
@@ -89,9 +89,44 @@ public class CommonController {
 		if(table == 3) {
 			to = "room/";
 		}
-		String url = "redirect:/" + to + id + "/update?index=" + index;
+		String url = "redirect:/" + to + id + "/update";
 		
 		return url;
+	}
+	/**
+	 * 管理员帮员工找回密码
+	 * @param id
+	 * @param tag
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value="/resetPassword", method=RequestMethod.POST)
+	@ResponseBody
+	public int resetPassword(Integer id, Integer tag, String password) {
+		commonService.updataPassword(id, tag, password);
+		return 1;
+	}
+	/**
+	 * 员工或者部门经理修改密码
+	 * @param old
+	 * @param new1
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/reset", method=RequestMethod.POST) 
+	@ResponseBody
+	public int resetCommon(String old, String new1, HttpSession session) {
+		User user = (User)session.getAttribute("user");
+		if(user == null) {
+			user = (User)session.getAttribute("manager");
+		}
+		String md5 = DigestUtils.md5DigestAsHex(old.getBytes());
+		if(!md5.equals(user.getPassword())) {
+			return 0;
+		}else {
+			commonService.updataPassword(user.getId(), Integer.parseInt(session.getAttribute("role").toString()), DigestUtils.md5DigestAsHex(new1.getBytes()));
+		}
+		return 1;
 	}
 	
 	@RequestMapping(value = "/{photo}/photo")
@@ -139,6 +174,7 @@ public class CommonController {
 	@RequestMapping(value="/md5", method=RequestMethod.POST)
 	@ResponseBody
 	public String getMd5(String password) {
+		System.out.println(password);
 		String md5 = DigestUtils.md5DigestAsHex(password.getBytes());
 		return md5;
 	}

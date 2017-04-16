@@ -38,15 +38,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 
 <body>
 	<%@include file="../nav.jsp" %>
-	<div class="left" style="float: left; margin-top: 50px">
-		<c:if test="${sessionScope.role == 3}">
-			<%@include file="../menu.jsp" %>
-		</c:if>
-		<c:if test="${sessionScope.role != 3}">
-			<%@include file="../calendar.jsp" %>
-			<%@include file="../notice.jsp" %>
-		</c:if>
-	</div>
+	<%@include file="../menu2.jsp" %>
 	<div class="container col-lg-9" style="margin-top: 50px; padding: 0 0">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -70,7 +62,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 							</tr>
 							<tr>
 								<td>性别</td>
-								<td>${user.gender == 0 ? "女" : "男" }</td>
+								<td>${user.gender == 1 ? "女" : "男" }</td>
 							</tr>
 							<tr>
 								<td>部门</td>
@@ -83,6 +75,9 @@ pageContext.setAttribute("partName", "/meeting/user");
 				<div class="col-lg-3" style="float:left">
 					<img alt="" src="/meeting/common/${user.photo }/photo" class="img" style="width: 200px; height: 200px">
 				</div>
+			</div>
+			<div class="panel-footer">
+				<a class="btn btn-primary" href="/meeting/user/${user.id }/update">修改个人信息</a>
 			</div>
 		</div>
 	</div>

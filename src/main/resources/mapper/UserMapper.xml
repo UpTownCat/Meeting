@@ -26,8 +26,14 @@
 		update
 			user
 		set
-			name = #{name}, password = #{password}, phone = #{phone},
-			gender=#{gender}, department_id=#{department.id},email = #{email}
+			name = #{name}, phone = #{phone},
+			gender=#{gender},
+			<if test="department != null">
+				<if test="deparment.id != 0">
+					department_id=#{department.id},
+				</if>
+			</if>
+			email = #{email}
 		where
 			id = #{id}
 	</update>
@@ -55,7 +61,8 @@
 			id, phone, password, name, photo, gender, email
 		from
 			user
-		where 1 = 1
+		where 
+			1 = 1
 	</select>
 
 	<select id="selectAllByPage" resultMap="userMap">
@@ -63,7 +70,8 @@
 			id, phone, password, name, photo, gender, email
 		from
 			user
-		where 1 = 1
+		where 
+			1 = 1 and password is not null
 	</select>
 
 	<select id="selectUserByPhoneAndPassword" resultMap="userMap">
@@ -90,6 +98,15 @@
 		from 
 			user
 		where 
+			phone = #{phone}
+	</select>
+	
+	<select id="selectIdByPhone" resultType="User">
+		select 
+			id
+		from 
+			user 
+		where
 			phone = #{phone}
 	</select>
 

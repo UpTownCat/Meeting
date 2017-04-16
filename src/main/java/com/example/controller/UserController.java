@@ -185,6 +185,7 @@ public class UserController {
 
 	@RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
 	public String updateUser(Integer index, User user) {
+		System.out.println(user);
 		userService.updateUser(user);
 		return LIST_URL + "?index=" + index;
 	}

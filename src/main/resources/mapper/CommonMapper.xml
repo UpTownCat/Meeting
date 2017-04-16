@@ -18,6 +18,20 @@
 		where 
 			id = #{id}
 	</update>
+	
+	<update id="updatePassword">
+		update 
+			<if test="tag == 1">
+				user
+			</if>
+			<if test="tag == 2">
+				manager
+			</if>
+		set
+			password = #{password}
+		where 
+			id = #{id}
+	</update>
 		
 	
 </mapper>

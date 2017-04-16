@@ -87,6 +87,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 							<th></th>
 							<th></th>
 							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -97,6 +98,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 								<td>${user.email }</td>
 								<td>${user.department.name}</td>
 								<td><a href="${partName }/${user.id }/detail" class="btn btn-info">详情</a></td>
+								<td><a href="#updateModal" class="btn btn-primary" data-toggle="modal" data-whatever="${user.id },${user.name }">重置密码</a></td>
 								<td><a class="btn btn-primary"
 									href="${partName }/${user.id }/update?index=${page.index }">更新</a></td>
 								<td><a class="btn btn-danger" href="#deleteModal"
@@ -125,6 +127,28 @@ pageContext.setAttribute("partName", "/meeting/user");
 							<button type="button" class="btn btn-primary"
 								data-dismiss="modal">取消</button>
 							<button type="button" class="btn btn-danger" id="delete">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="updateModal" role="dialog" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 id="msg2"></h4>
+						</div>
+						<div class="modal-body">
+							<label>新密码:</label>
+							<input type="password" class="form-control" id="password">
+							<input type="hidden" id="real_password">
+							<input type="hidden" id="tag" value="1">
+							<input type="hidden" id="id" value="">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary"
+								data-dismiss="modal">取消</button>
+							<button type="button" class="btn btn-danger" id="resetPassword" data-dismiss="modal">确定</button>
 						</div>
 					</div>
 				</div>

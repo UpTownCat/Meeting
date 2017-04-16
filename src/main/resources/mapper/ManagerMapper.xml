@@ -20,8 +20,13 @@
 		update
 		manager
 		set
-		name = #{name}, password = #{password}, phone = #{phone},
-		gender=#{gender}, department_id = #{department.id}
+		name = #{name}, phone = #{phone}, email = #{email},
+		<if test="department != null">
+			<if test="department.id != 0">
+				department_id = #{department.id},
+			</if>
+		</if>
+		gender=#{gender}
 		where
 		id = #{id}
 	</update>

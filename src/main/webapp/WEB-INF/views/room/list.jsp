@@ -18,6 +18,7 @@ String path = request.getContextPath();
 <%@include file="../common2l.jsp"%>
 <script type="text/javascript">
 		$(function(){
+			CalendarHandler.initialize(0, 0, 0);
 			common.init("/meeting/room/list", "会议室吗");
 			var index = "${page.index }";
 			var total = "${page.total }";
@@ -44,9 +45,7 @@ String path = request.getContextPath();
 
 <body>
 	<%@include file="../nav.jsp" %>
-	<div style="float:left; margin-top: 50px">
-		<%@include file="../menu.jsp" %>
-	</div>
+	<%@include file="../menu2.jsp" %>
 	<div class="container col-lg-9" style="float:left; margin-top: 50px; padding : 0 0">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -88,8 +87,13 @@ String path = request.getContextPath();
 							<th>容量</th>
 <!-- 							<th>预约</th> -->
 							<th></th>
-							<th></th>
-							<th></th>
+							<c:if test="${sessionScope.role == 2 }">
+								<th></th>
+							</c:if>
+							<c:if test="${sessionScope.role == 3 }">
+								<th></th>
+								<th></th>
+							</c:if>
 						</tr>
 					</thead>
 					<tbody>
@@ -101,19 +105,26 @@ String path = request.getContextPath();
 <!-- 								<td><a class="btn btn-primary" -->
 <!-- 									href="/meeting/manager/${room.id }/prepareMeeting">预约</a></td> -->
 								<td><a href="/meeting/room/${room.id }/detail" class="btn btn-info">详情</a></td>
-								<td><a class="btn btn-primary"
-									href="/meeting/room/${room.id }/update?id=${room.id}&index=${page.index }">更新</a></td>
-								<td><a class="btn btn-danger" href="#deleteModal"
-									data-toggle="modal" data-whatever="${room.id},${room.number }">删除</a></td>
+								<c:if test="${sessionScope.role == 2 }">
+									<td><a class="btn btn-primary" href="/meeting/manager/meeting/first1?roomId=${room.id }">预约</a></td>
+								</c:if>
+								<c:if test="${sessionScope.role == 3 }">
+									<td><a class="btn btn-primary"
+										href="/meeting/room/${room.id }/update?id=${room.id}&index=${page.index }">更新</a></td>
+									<td><a class="btn btn-danger" href="#deleteModal"
+										data-toggle="modal" data-whatever="${room.id},${room.number }">删除</a></td>
+								</c:if>		
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 			</div>
 			<div class="panel-footer">
-				<a class="btn btn-primary" href="/meeting/room/add">
-					增加会议室<span id="icon" class="glyphicon glyphicon-plus"></span>
-				</a>
+				<c:if test="${sessionScope.role == 3 }">
+					<a class="btn btn-primary" href="/meeting/room/add">
+						增加会议室<span id="icon" class="glyphicon glyphicon-plus"></span>
+					</a>
+				</c:if>
 				<div class="pull-right">
 					<%@include file="../page.jsp" %>
 				</div>

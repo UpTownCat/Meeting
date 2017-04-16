@@ -23,6 +23,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 <%@include file="../common2l.jsp"%>
 <script type="text/javascript">
 		$(function() {
+			common.init("", "");
 			$('#email1').autoMail({
 				emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn']
 			});
@@ -56,16 +57,19 @@ pageContext.setAttribute("partName", "/meeting/user");
 							<div class="form-group">
 								<label class="label-control">邮箱</label>
 								<input name="email" class="form-control" id="email1"/>
+								<span name="emailValidate" style="color: red"></span>
 							</div>
 							<div class="form-group">
 								<label class="label-control">密码</label>
-								<input name="password" class="form-control" />
+								<input type="password" id="password" class="form-control" />
+								<span name="passwordValidate" style="color: red"></span>
+								<input type="hidden" name="password" id="real_password">
 							</div>
 							
 							<div class="form-group">
 								<label class="label-control">性别</label>
 								<br>
-								<input type="radio" name="gender" value="1">男 &nbsp;&nbsp;&nbsp;
+								<input type="radio" name="gender" value="1" checked="checked">男 &nbsp;&nbsp;&nbsp;
 								<input type="radio" name="gender" value="0">女
 							</div>
 							
@@ -83,7 +87,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 									</c:forEach>
 								</select>
 							</div>
-							<button class="btn btn-primary pull-right">确定</button>
+							<button class="btn btn-primary pull-right" id="submit">确定</button>
 						</form>
 				</div>
 				<%@include file="../preview_img.jsp" %>

@@ -93,7 +93,7 @@ request.setAttribute("meetingPath", path + "/meeting/");
 													<c:if test="${msgDto.available == 1 }">
 														<label>
 															<c:if test="${role == 2 }">
-																	${msgDto.time }:<a class="btn btn-success" href="/meeting/manager/meeting/first?roomId=${dayDto.roomId }">ԤԼ</a>
+																	${msgDto.time }:<a class="btn btn-success" href="/meeting/manager/meeting/first1?roomId=${dayDto.roomId }">ԤԼ</a>
 																</c:if>
 																<c:if test="${role == 1 }">
 																	${msgDto.time }:<a class="btn btn-success" disabled="disabled">ԤԼ</a>
@@ -118,7 +118,7 @@ request.setAttribute("meetingPath", path + "/meeting/");
 														<c:if test="${msgDto.available == 1 }">
 															<label>
 																<c:if test="${role == 2 }">
-																	${msgDto.time }:<a class="btn btn-success" href="/meeting/manager/meeting/first?roomId=${dayDto.roomId }">ԤԼ</a>
+																	${msgDto.time }:<a class="btn btn-success" href="/meeting/manager/meeting/first1?roomId=${dayDto.roomId }">ԤԼ</a>
 																</c:if>
 																<c:if test="${role == 1 }">
 																	${msgDto.time }:<a class="btn btn-success" disabled="disabled">ԤԼ</a>

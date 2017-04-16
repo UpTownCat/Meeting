@@ -15,4 +15,10 @@ public class CommonServiceImpl implements CommonService {
 		commonDao.updatePhoto(id, table, photo);
 	}
 
+	@Override
+	public void updataPassword(int id, int tag, String password) {
+		// TODO Auto-generated method stub
+		commonDao.updatePassword(id, tag, password);
+	}
+
 }

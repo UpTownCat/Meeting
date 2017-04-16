@@ -106,19 +106,11 @@ public class ManagerController {
 			Integer gender, @RequestParam(value="departemntId", required=false) String departmentId, MultipartFile photo) {
 		//保存文件并获得文件存的文件名
 		String fileName = CommonUtil.saveFile(photo, CommonUtil.getConfigString("photoLocation"),1);
-//		System.out.println(fileName);
 		Department department = new Department();
 		if(departmentId != null && departmentId.length() != 0) {
 			department.setId(Integer.parseInt(departmentId));	
 		}
-//		Manager manager = new Manager(gender, phone, password, name, fileName, email, department.getId() == 0 ? null : department);
-		Manager manager = new Manager();
-		manager.setName(name);
-		manager.setPhone(fileName);
-		manager.setEmail(email);
-		manager.setPassword(password);
-		manager.setGender(gender);
-		manager.setDepartment(department.getId() == 0 ? null : department);
+		Manager manager = new Manager(gender, phone, password, name, fileName, email, department.getId() == 0 ? null : department);
 		managerService.addManager(manager);
 		return LIST_URL + "?index=" + 9999;
 	}
@@ -133,11 +125,15 @@ public class ManagerController {
 		map.put("departments", departments);
 		return "manager/manager_update_admin";
 	}
-
+	@Transactional
 	@RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
-	public String updateManager(@RequestParam Integer index, Manager manager) {
+	public String updateManager(Manager manager, HttpSession session) {
 		managerService.updateManager(manager);
-		return LIST_URL + "?index=" + index;
+		Manager man = (Manager)session.getAttribute("manager");
+		User user = userService.selectIdByPhone(man.getPhone());
+		manager.setId(user.getId());
+		userService.updateUser(manager);
+		return LIST_URL;
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
@@ -146,144 +142,6 @@ public class ManagerController {
 		return LIST_URL;
 	}
 
-//	/**
-//	 * 选择会议室
-//	 * 
-//	 * @param roomId
-//	 * @param map
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/meeting/first", method = RequestMethod.GET)
-//	public String prepareMeetingFirst(Integer roomId, HttpSession session,
-//			Map<String, Object> map) {
-//		Meeting meeting = null;
-//		if (roomId != -1) {
-//			meeting = new Meeting();
-//			MeetingRoom meetingRoom = meetingRoomService
-//					.selectMeetingRoomById(roomId);
-//			meeting.setMeetingRoom(meetingRoom);
-//		} else {
-//			meeting = (Meeting) session.getAttribute("meeting");
-//			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-//			String startTimeStr = format.format(meeting.getStartTime());
-//			String endTimeStr = format.format(meeting.getEndTime());
-//			map.put("startTimeStr", startTimeStr);
-//			map.put("endTimeStr", endTimeStr);
-//		}
-//		List<MeetingRoom> meetingRooms = meetingRoomService.selectAll();
-//		map.put("meeting", meeting);
-//		map.put("meetingRooms", meetingRooms);
-//		return "manager/first";
-//	}
-//
-//	/**
-//	 * 选择会议器材
-//	 * 
-//	 * @param meeting
-//	 * @param session
-//	 * @param map
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/meeting/second", method = RequestMethod.POST)
-//	public String prepareMeetingSecond(Meeting meeting, HttpSession session,
-//			Map<String, Object> map) {
-//		// 寻找session里边有没有meeting， 加入不寻找的话从第三步直接返回到第1步后进入第二步信息不能回显
-//		Meeting oldMeeting = (Meeting) session.getAttribute("meeting");
-//		List<Equipment> equipments = null;
-//		if (oldMeeting == null || oldMeeting.getEquipments() == null) {
-//			equipments = equipmentService.selectAll();
-//		} else {
-//			equipments = oldMeeting.getEquipments();
-//		}
-//		meeting.setEquipments(equipments);
-//		session.setAttribute("meeting", meeting);
-//		map.put("equipments", equipments);
-//		return "manager/second";
-//	}
-//
-//	/**
-//	 * 返回上一步重新选择会议器材
-//	 * 
-//	 * @param meeting
-//	 * @param session
-//	 * @param map
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/meeting/second", method = RequestMethod.GET)
-//	public String prepareMeetingSecond2(HttpSession session,
-//			Map<String, Object> map) {
-//		Meeting meeting = (Meeting) session.getAttribute("meeting");
-//		map.put("equipments", meeting.getEquipments());
-//		return "manager/second";
-//	}
-//
-//	@RequestMapping(value = "/meeting/third", method = RequestMethod.POST)
-//	public String prepareMeetingThird(Integer tag, HttpServletRequest request,
-//			Map<String, Object> map) {
-//		HttpSession session = request.getSession();
-//		Meeting meeting = (Meeting) session.getAttribute("meeting");
-//		List<Invitation> invitations = null;
-//		if (meeting != null && meeting.getInvitations() != null)
-//			invitations = meeting.getInvitations();
-//		List<Equipment> equipments = meeting.getEquipments();
-//		// 更新设备数量
-//		for (int i = 0; i < equipments.size(); i++) {
-//			Equipment equipment = equipments.get(i);
-//			int id = equipment.getId();
-//			String need = request.getParameter(id + "");
-//			if (need != null && need != "") {
-//				equipment.setNeed(Integer.parseInt(need));
-//			}
-//		}
-//		// 上一步
-//		if (tag == 1) {
-//			return "redirect:/manager/meeting/first?roomId=-1";
-//		}
-//		List<Department> departments = departmentService.selectAll();
-//		map.put("departments", departments);
-//		if (invitations != null) {
-//			map.put("invitations", invitations);
-//			map.put("tag", 0);
-//		}
-//		return "manager/third";
-//	}
-//
-//	/**
-//	 * 完成会议
-//	 * 
-//	 * @param tag
-//	 * @param session
-//	 * @param userIds
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/meeting/finish", method = RequestMethod.POST)
-//	public String meetingFinish(Integer tag, HttpSession session,
-//			Integer[] userIds) {
-//		List<Invitation> invitations = new ArrayList<Invitation>();
-//		Meeting meeting = (Meeting) session.getAttribute("meeting");
-//		if (userIds != null) {
-//			for (int i = 0; i < userIds.length; i++) {
-//				int userId = userIds[i];
-//				User user = new User();
-//				user.setId(userId);
-//				Invitation invitation = new Invitation(2, user, meeting);
-//				invitations.add(invitation);
-//			}
-//		}
-//		meeting.setInvitations(invitations);
-//		if (tag == 0) {
-//			Manager manager = new Manager();
-//			manager.setId(1);
-//			meeting.setManager(manager);
-//			finishMeeting(meeting);
-//			session.removeAttribute("meeting");
-//		} else {
-//			return "redirect:/manager/meeting/second";
-//		}
-//		return "redirect:/room/month/201703";
-//	}
-
-	/*-----------------------------会议预约--------------------------------------*/
 	@RequestMapping(value = "/meeting/first1", method = RequestMethod.GET)
 	public String prepareMeetingFirst1(
 			@RequestParam(value="roomId", required=false) Integer roomId,
@@ -554,7 +412,7 @@ public class ManagerController {
 			session.removeAttribute("roomId");
 		}
 
-		return "redirect:/meeting/list?index=9999";
+		return "redirect:/meeting/open";
 	}
 
 	/*---------------------------------会议预约-----------------------------------*/

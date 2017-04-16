@@ -8,17 +8,12 @@
 				</div>
 					 <ul class="nav navbar-nav navbar-right">
 			 	<li><a href="/meeting/meeting/list?state=3">会议显示</a></li>
+			 	<li><a href="/meeting/room/list">会议室显示</a></li>
 		       	<c:if test="${sessionScope.role == 2 }">
 		       		<li><a href="/meeting/department/${sessionScope.manager.department.id }/detail">我的部门</a>
 		       		<li><a href="/meeting/meeting/open">我召开的会议</a></li>
 		       		<li><a href="/meeting/manager/meeting/first1">会议预约 </a></li>
 		       	</c:if>
-	<!--%	       	<li><a href="/meeting/meeting/mine">我参加的会议</a></li>
-	            <c:if test="${sessionScope.role == 1 }">
-	            	<li><a href="/meeting/meeting/record">我记录的会议</a></li>
-	            </c:if>
-	            
-	      %      -->
  		        <li class="dropdown">
  	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心<span class="caret"></span></a> 
 	            <ul class="dropdown-menu">
@@ -30,10 +25,12 @@
 	            		<a href="/meeting/manager/${sessionScope.manager.id }/detail">个人信息</a>
 	            	</c:if>
 	            </li> 
-	            <li><a href="/meeting/meeting/list">修改密码</a></li> 
+	            <li><a href="#reset" data-toggle="modal">修改密码</a></li> 
 	            <li><a href="/meeting/meeting/mine?state=2">需要参加会议</a></li> 
  	            <li><a href="/meeting/meeting/mine">已参加会议</a></li> 
- 	            <li><a href="/meeting/meeting/record?state=1">提交会议文档</a></li> 
+ 	            <c:if test="${sessionScope.role == 1 }">
+ 	            	<li><a href="/meeting/meeting/record?state=1">提交会议文档</a></li> 
+ 	            </c:if>
 	          </ul>
 			</c:if>
 			
@@ -42,5 +39,28 @@
 					<a class="navbar-brand" href="/meeting/index.jsp">会议管理系统后台管理</a>
 				</div>
 			</c:if>
+			
+			<div class="modal fade" id="reset" role="dialog" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 id="msg2">修改密码</h4>
+						</div>
+						<div class="modal-body">
+							<label>原密码:</label>
+							<input type="password" id="oldPassword" class="form-control">
+							<label>新密码:</label>
+							<input type="password" class="form-control" id="password1">
+							<label>重新输入:</label>
+							<input type="password" class="form-control" id="password2">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary"
+								data-dismiss="modal">取消</button>
+							<button type="button" class="btn btn-danger" id="commonReset" data-dismiss="modal">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 </div>

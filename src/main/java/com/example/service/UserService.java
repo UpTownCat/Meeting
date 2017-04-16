@@ -19,4 +19,5 @@ public interface UserService {
 	List<User> selectUserByDepartmentId(int id);
 	String selectUserNameById(int id);
 	User selectUserByPhone(String phone);
+	User selectIdByPhone(String phone);
 }

@@ -11,3 +11,4 @@
 <script type="text/javascript" src="../resources/js/page.js"></script>
 <script type="text/javascript" src="../resources/js/autoMail.1.0.min.js"></script>
 <script type="text/javascript" src="../resources//js/jquery-confirm.js"></script>
+<script type="text/javascript" src="../resources//js/reset_password.js"></script>

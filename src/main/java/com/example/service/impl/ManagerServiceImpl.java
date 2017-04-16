@@ -40,12 +40,9 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	@Transactional
 	public int updateManager(Manager manager) {
 		// TODO Auto-generated method stub
 		 managerDao.updateManager(manager);
-		 manager.setPassword(null);
-		 userDao.updateUser(manager);
 		 return 1;
 	}
 

@@ -45,4 +45,5 @@ public interface UserDao {
 	List<User> selectAllByPage(Page page);
 	User selectUserByPhoneAndPassword(@Param("phone")String phone, @Param("password")String password);
 	User selectUserByPhone(String phone);
+	User selectIdByPhone(String phone);
 }
