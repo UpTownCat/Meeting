@@ -19,7 +19,7 @@ String path = request.getContextPath();
 <script type="text/javascript">
 		$(function(){
 			CalendarHandler.initialize(0, 0, 0);
-			common.init("/meeting/room/list", "会议室吗");
+			common.init("room", "会议室吗, 与该会议室相关的的为召开的会议都会失败！");
 			var index = "${page.index }";
 			var total = "${page.total }";
 			var url = "/meeting/user/list";

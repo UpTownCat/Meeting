@@ -18,4 +18,5 @@ public interface MeetingService {
 	List<Meeting> selectMeetingByRoomIdAndDate2(int roomId, Date startTime, Date endTime);
 	Meeting selectMeetingByDate(Date startTime, Date endTime);
 	List<Meeting> selectMeetingByManagerIdByPage(Page page, int managerId);
+	List<Meeting> selectMeetingByRoomIdAndStartTime(int meetingRoomId, Date startTime);
 }	

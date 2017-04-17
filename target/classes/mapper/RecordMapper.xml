@@ -50,6 +50,8 @@
 			meeting
 		on
 			(a.meeting_id = meeting.id)
+		where 
+			is_pass = 1
 	</select>
 	
 	<resultMap type="Record" id="recordMap">

@@ -80,6 +80,15 @@
 			</if>
 	</select>
 	
+	<select id="selectMeetingByRoomIdAndStartTime" resultMap="meetingMap2">
+		select
+			id, title, start_time, end_time , manager_id, is_pass
+		from
+			meeting
+		where 
+			meeting_room_id = #{meetingRoomId} and start_time >= #{startTime} and is_pass > 0
+	</select>
+	
 	<select id="selectMeetingByManagerIdByPage" resultType="Meeting">
 		select
 			id, title, start_time, end_time, is_pass

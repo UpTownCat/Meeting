@@ -1,24 +1,16 @@
 package com.example.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,15 +18,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.bean.Invitation;
 import com.example.bean.Meeting;
 import com.example.bean.MeetingRoom;
 import com.example.bean.Page;
+import com.example.bean.Record;
 import com.example.dto.DayViewDto;
 import com.example.dto.MonthViewDto;
 import com.example.dto.MsgDto;
 import com.example.dto.WeekViewDto;
+import com.example.service.InvitatoinService;
 import com.example.service.MeetingRoomService;
 import com.example.service.MeetingService;
+import com.example.service.RecordService;
 import com.example.util.CommonUtil;
 
 @Controller
@@ -44,6 +40,12 @@ public class RoomViewController {
 	private MeetingRoomService meetingRoomService;
 	@Autowired
 	private MeetingService meetingService;
+	@Autowired
+	private InvitatoinService invitatoinService;
+	@Autowired
+	private RecordService recordService;
+	@Autowired
+	private JavaMailSender sender;
 	private final static long DAY = 1000 * 60 * 60 * 24;
 	private final static long HOUR = 1000 * 60 * 60;
 	private final static String[] TIME = {"上午", "下午", "晚上"};
@@ -81,7 +83,6 @@ public class RoomViewController {
 	@RequestMapping(value="/valid", method=RequestMethod.GET)
 	@ResponseBody
 	public int validateRoom(Integer id, String startTime, int meetingId) {
-		Calendar calendar = Calendar.getInstance();
 		int hour = Integer.parseInt(startTime.substring(startTime.length() - 5, startTime.length() - 3));
 		String date = startTime.substring(0, 10);
 		if(hour < 12) {
@@ -151,8 +152,34 @@ public class RoomViewController {
 	}
 	
 	@RequestMapping(value="/{id}/delete", method=RequestMethod.DELETE)
+	@Transactional
 	public String deleteRoom(@PathVariable Integer id) {
 		meetingRoomService.delateRoom(id);
+		List<Meeting> meetings = meetingService.selectMeetingByRoomIdAndStartTime(id, new Date());
+		if(!meetings.isEmpty()) {
+			for(int i = 0; i < meetings.size(); i++) {
+				Meeting meeting = meetings.get(i);
+				meetingService.updateMeetingState(meeting.getId(), 0);
+				CommonUtil.sendEmail(meeting.getManager().getEmail(), "由于会议室被删除，您主题为 << "  + meeting.getTitle() + " >>的会议预约失败！", sender);
+				if(meeting.getIsPass() == 1) {
+					List<Invitation> invitations = invitatoinService.selectInvitationByMeetingId(meeting.getId());
+					List<Record> records = recordService.selectRecordByMeetingId(meeting.getId());
+					if(invitations != null) {
+						for(int j = 0; j < invitations.size(); j++) {
+							Invitation invitation = invitations.get(j);
+							CommonUtil.sendEmail(invitation.getUser().getEmail(), "主题为<< " + meeting.getTitle() + " >>的会议已经取消！", sender);
+						}
+					}
+					if(records != null) {
+						for(int j = 0; j < records.size(); j++) {
+							Record record = records.get(j);
+							CommonUtil.sendEmail(record.getUser().getEmail(), "主题为<< " + meeting.getTitle() + " >>的会议已经取消！您不用做会议记录", sender);
+							
+						}
+					}
+				}
+			}
+		}
 		return "redirect:/room/list";
 	}
 	
@@ -182,8 +209,6 @@ public class RoomViewController {
 			dto.setMsgDtos(msgDtos);
 			dtos.add(dto);
 		}
-		int y = Integer.parseInt(day.substring(0, 4));
-		int m  = Integer.parseInt(day.substring(4, 6));
 		map.put("dtos", dtos);
 		map.put("page", page);
 		map.put("day", day);
@@ -224,8 +249,6 @@ public class RoomViewController {
 		}
 		int y = Integer.parseInt(day.substring(0, 4));
 		int m  = Integer.parseInt(day.substring(4, 6));
-		String next = getNextString(y, m);
-		String previours = getPrevioursString(y, m);
 		map.put("page", page);
 		map.put("weekViewDtos", weekViewDtos);
 		map.put("day", day);
@@ -241,7 +264,6 @@ public class RoomViewController {
 		List<MonthViewDto> monthViewDtos = new ArrayList<>();
 		for(int i = 1; i <= days; i++) {
 			String startStr = getDayString(month, i);
-			String endStr = getDayString(month, i);
 			Date startTime = null;
 			Date endTime = null;
 			try {
@@ -267,10 +289,6 @@ public class RoomViewController {
 			}
 			monthViewDtos.add(monthViewDto);
 		}
-		int y = Integer.parseInt(month.substring(0, 4));
-		int m  = Integer.parseInt(month.substring(4, 6));
-		String next = getNextString(y, m);
-		String previours = getPrevioursString(y, m);
 		map.put("dtos", monthViewDtos);
 		map.put("msg", "Darkstar");
 		map.put("day", month + "01");
@@ -286,29 +304,6 @@ public class RoomViewController {
 //		return model;
 //	}
 	
-	/**
-	 * 绑定会议室的早中晚时间段的会议
-	 * @param meetingRoom
-	 * @param meetings
-	 */
-	private void bindMeeting(MeetingRoom meetingRoom, List<Meeting> meetings) {
-		ArrayList<Date> arrayList = new ArrayList<>();
-		for(int i = 0; i < meetings.size(); i++) {
-			Meeting meeting = meetings.get(i);
-			Date startTime = meeting.getStartTime();
-			int hour = startTime.getHours();
-			if(hour < 12 ) {
-				meetingRoom.setMorning(meeting);
-			}else {
-				if(hour < 17 && hour > 12) {
-					meetingRoom.setAfternoon(meeting);
-				}else {
-					meetingRoom.setNight(meeting);
-				}
-			}
-			
-		}
-	}
 	
 	/**
 	 * 获取字符串日期(yyyyMMdd)

@@ -97,4 +97,11 @@ public class MeetingServiceImpl implements MeetingService {
 		return meetingDao.selectMeetingByManagerIdByPage(page, managerId);
 	}
 
+	@Override
+	public List<Meeting> selectMeetingByRoomIdAndStartTime(int meetingRoomId,
+			Date startTime) {
+		// TODO Auto-generated method stub
+		return meetingDao.selectMeetingByRoomIdAndStartTime(meetingRoomId, startTime);
+	}
+
 }
