@@ -173,6 +173,9 @@ public class PageInterceptor implements Interceptor {
 		if(page.getName() != null && page.getName().length() != 0) {
 			str.append(" and name like '%" + page.getName() + "%' ");
 		}
+		if(page.getNumber() != null && page.getNumber().length() != 0) {
+			str.append(" and number like '%" + page.getNumber() + "%' ");
+		}
 		if(page.getAppointment() != 0) {
 			if(page.getAppointment() == 1) {
 				str.append(" and is_pass = " + page.getAppointment());

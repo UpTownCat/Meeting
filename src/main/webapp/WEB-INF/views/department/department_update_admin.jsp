@@ -20,6 +20,13 @@ String path = request.getContextPath();
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <%@include file="../common3l.jsp"%>
+<script type="text/javascript" src="../../resources/js/name_input_valid.js"></script>
+<script type="text/javascript">
+	$(function() {
+		var n = "${department.name}";
+		name_valid.init(n);
+	})
+</script>
 </head>
 
 <body>
@@ -40,7 +47,7 @@ String path = request.getContextPath();
 						<input type="hidden" name="index" value="${param.index }">
 						<div class="form-group">
 							<label class="control-label">名称</label>
-							<form:input path="name" class="form-control" />
+							<form:input path="name" class="form-control name" />
 						</div>
 						<div class="form-group">
 							<label class="control-label">部门经理</label>
@@ -57,10 +64,9 @@ String path = request.getContextPath();
 									</select>
 							</c:if>
 						</div>
-						<button class="btn btn-primary">确定</button>
+						<button class="btn btn-primary" id="submit44">确定</button>
 					</form:form>
 				</div>
-						
 			</div>
 		</div>
 	</div>

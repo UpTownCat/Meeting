@@ -3,6 +3,7 @@ var userInput = {
 			$(".email").blur(function() {
 				var val = this.value;
 				if(e1.length != 0 && e1 == val) {
+					t1 = 1;
 					return false;
 				}
 				var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
@@ -24,6 +25,7 @@ var userInput = {
 			$(".phone").blur(function(){
 				var val = this.value;
 				if(p1.length != 0 && p1 == val) {
+					t2 = 1;
 					return false;
 				}
 				if(val.length != 11) {

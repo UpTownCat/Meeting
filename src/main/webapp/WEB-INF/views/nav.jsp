@@ -1,5 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="GBK"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<<c:if test="${sessionScope.role == null }">
+	<c:redirect url="/index.jsp"></c:redirect>
+</c:if>
 <div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<c:if test="${sessionScope.role == 3 }">

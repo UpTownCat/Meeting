@@ -76,9 +76,11 @@ pageContext.setAttribute("partName", "/meeting/user");
 					<img alt="" src="/meeting/common/${user.photo }/photo" class="img" style="width: 200px; height: 200px">
 				</div>
 			</div>
-			<div class="panel-footer">
-				<a class="btn btn-primary" href="/meeting/user/${user.id }/update">修改个人信息</a>
-			</div>
+			<c:if test="${sessionScope.role != 3 }">
+				<div class="panel-footer">
+					<a class="btn btn-primary" href="/meeting/user/${user.id }/update">修改个人信息</a>
+				</div>
+			</c:if>
 		</div>
 	</div>
 </body>

@@ -69,6 +69,8 @@
 		id, number, location, capacity
 		from
 		meeting_room
+		where
+			1 = 1
 	</select>
 	
 	<select id="selectMeetingRoomByMeetingId" resultType="MeetingRoom">

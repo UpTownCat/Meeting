@@ -132,11 +132,11 @@ public class RoomViewController {
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public String addRoom(String number, Integer capacity, String location, Integer index, MultipartFile photo) {
+	public String addRoom(String number, Integer capacity, String location, MultipartFile photo) {
 		String fileName = CommonUtil.saveFile(photo, CommonUtil.getConfigString("photoLocation"), 1);
 		MeetingRoom meetingRoom = new MeetingRoom(capacity, number, location, fileName);
 		meetingRoomService.addMeetingRoom(meetingRoom);
-		return "redirect:/room/list" + "?index=" + index;
+		return "redirect:/room/list";
 	}
 	
 	@RequestMapping(value="/{id}/update", method=RequestMethod.GET)

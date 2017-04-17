@@ -20,7 +20,6 @@ pageContext.setAttribute("partName", "manager");
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <%@include file="../common2l.jsp"%>
-<script type="text/javascript" src="/meeting/resources/js/equipValidate.js"></script>
 <script type="text/javascript">
 		$(function() {
 			common.init("equipment", "  吗");
@@ -47,6 +46,46 @@ pageContext.setAttribute("partName", "manager");
 				form.submit();
 				return false;
 			});
+			
+			var t1 = 1;
+			$(".name").blur(function() {
+				var val = this.value;
+				if(val.length == 0) {
+					common.remind("设备名字不能为空！");
+					t1 = 0;
+					return false;
+				}
+				val = encodeURI(val);
+				$.get("/meeting/common/name", {"tag": 5, "name": val}, function(data) {
+					if(data != 0) {
+						t1 = 2;
+						common.remind("该名称的设备已经存在！");
+					}else {
+						t1 = 1;
+					}
+				})
+			})
+			
+			$("#submit44").click(function() {
+				if(t1 == 0) {
+					common.remind("设备名字不能为空！");
+					return false;
+				}
+				if(t1 == 2) {
+					common.remind("该名称的设备已经存在！");
+					return false;
+				};
+				var count = $("#count").val();
+				if(count.length == 0) {
+					common.remind("信息不完整！");
+					return false;
+				}
+				var reg = /^\+?[1-9][0-9]*$/;
+				if(!reg.test(count)) {
+					common.remind("输入的不是正整数！");
+					return false;
+				}
+			})
 		})
 	</script>
 </head>
@@ -127,18 +166,15 @@ pageContext.setAttribute("partName", "manager");
 							<div class="form-group">
 								<label class="control-label">名称</label> 
 								<input
-									class="form-control" name="name" type="text">
+									class="form-control name" name="name" type="text">
 							</div>
 							<div class="form-group">
 								<label class="control-label">数量</label> 
 								
 								<input
-									class="form-control" name="count" type="text">
+									class="form-control" name="count" type="text" id="count">
 							</div>
-							<input type="submit" class="btn btn-primary"  value="确定" name="addOrUpdate"/>
-							<br>
-							<span name="nameValidate" style="color: red"></span>
-							<span name="countValidate" style="color: red"></span>
+							<button type="submit" class="btn btn-primary" id="submit44">确定</button>
 						</form>
 					</div>
 				</div>

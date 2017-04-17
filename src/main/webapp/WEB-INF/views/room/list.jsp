@@ -55,7 +55,7 @@ String path = request.getContextPath();
 				<form class="navbar-form navbar-left" id="form">
 				     <input type="hidden" name="index" value="1" id="toIndex">
 				     <div class="form-group">
-					     <input type="text" class="form-control" name="number" placeholder="会议室编号" value="${page.name }">
+					     <input type="text" class="form-control" name="number" placeholder="会议室编号" value="${page.number }">
 				     </div>
 				      <div class="form-group">
 				     	<label>容量:</label>

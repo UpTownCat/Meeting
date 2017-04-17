@@ -28,8 +28,11 @@ var name_valid = {
 					return false;
 				}
 				if(t1 == 0) {
-					common.remind("该编号的会议室已经存在！");
-					return false;
+					var val = $(".name").val();
+					if(n != val) {
+						common.remind("该编号的会议室已经存在！");
+						return false;
+					}
 				}
 				if(check() == 0) {
 					common.remind("输入信息不完整， 请检查输入");
