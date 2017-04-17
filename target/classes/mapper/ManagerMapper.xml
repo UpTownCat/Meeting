@@ -30,6 +30,10 @@
 		where
 		id = #{id}
 	</update>
+	
+	<update id="updateManagerDepartment">
+		update manager set department_id = null where id = #{id}
+	</update>
 
 	<select id="selectManagerById" resultMap="managerMap">
 		select
@@ -45,6 +49,15 @@
 		id, phone, password, name, photo, gender, email
 		from
 		manager
+	</select>
+	
+	<select id="selectAllByCondiction" resultType="Manager">
+		select
+			id, name
+		from
+			manager
+		where 
+			department_id is null
 	</select>
 
 	<select id="selectAllByPage" resultMap="managerMap">

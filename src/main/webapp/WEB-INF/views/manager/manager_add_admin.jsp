@@ -21,9 +21,11 @@ pageContext.setAttribute("partName", "/meeting/user");
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <%@include file="../common2l.jsp"%>
+<script type="text/javascript" src="../resources/js/user_input_valid.js"></script>
 <script type="text/javascript">
 		$(function() {
 			common.init("", "");
+			userInput.init(1, 1, "", "");
 			$('#email1').autoMail({
 				emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn']
 			});
@@ -48,20 +50,20 @@ pageContext.setAttribute("partName", "/meeting/user");
 							<input type="hidden" name="index" value="${param.index }">
 							<div class="form-group">
 								<label class="label-control">姓名</label>
-								<input name="name" class="form-control" />
+								<input name="name" class="form-control input" />
 							</div>
 							<div class="form-group">
 								<label class="label-control">电话</label>
-								<input name="phone" class="form-control" />
+								<input name="phone" class="form-control input phone"  />
 							</div>
 							<div class="form-group">
 								<label class="label-control">邮箱</label>
-								<input name="email" class="form-control" id="email1"/>
+								<input name="email" class="form-control input email" id="email1"/>
 								<span name="emailValidate" style="color: red"></span>
 							</div>
 							<div class="form-group">
 								<label class="label-control">密码</label>
-								<input type="password" id="password" class="form-control" />
+								<input type="password" id="password" class="form-control input" />
 								<span name="passwordValidate" style="color: red"></span>
 								<input type="hidden" name="password" id="real_password">
 							</div>
@@ -75,7 +77,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 							
 							<div class="form-group">
 								<label class="label-control">照片</label>
-								<input name="photo" type="file" id="fileInput" />
+								<input name="photo" type="file" id="fileInput" class="input" />
 							</div>
 							
 							<div class="form-group">
@@ -87,7 +89,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 									</c:forEach>
 								</select>
 							</div>
-							<button class="btn btn-primary pull-right" id="submit">确定</button>
+							<button class="btn btn-primary pull-right" id="submit44">确定</button>
 						</form>
 				</div>
 				<%@include file="../preview_img.jsp" %>

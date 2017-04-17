@@ -15,6 +15,7 @@ public interface EquipmentDao {
 	int updateEquipment(Equipment equipment);
 	int useEquipment(Equipment equipment);
 	Equipment selectEquipmentById(int id);
+	Equipment selectEquipmentByName(String name);
 	List<Equipment> selectAll();
 	List<Equipment> selectAllByPage(Page page);
 	List<Equipment> selectEquipmentByMeetingId(int id);

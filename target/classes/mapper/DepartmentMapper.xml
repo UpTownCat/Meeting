@@ -50,13 +50,13 @@
 			department
 	</select>
 	
-	<select id="selectAllByCondiction" resultMap="departmentMap">
+	<select id="selectAllByCondiction" resultType="Department">
 		select
 			id, name
 		from
 			department
 		where
-			id not in (select department_id from manager)
+			id not in (select department_id from manager where department_id is not null) 
 	</select>
 	
 	<select id="selectAllDepartmentName" resultType="Department">

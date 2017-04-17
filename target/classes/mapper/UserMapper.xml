@@ -29,13 +29,22 @@
 			name = #{name}, phone = #{phone},
 			gender=#{gender},
 			<if test="department != null">
-				<if test="deparment.id != 0">
+				<if test="department.id != 0">
 					department_id=#{department.id},
 				</if>
 			</if>
 			email = #{email}
 		where
 			id = #{id}
+	</update>
+	
+	<update id="updateUserDepartment" >
+		update 
+			user
+		set 
+			department_id = null
+		where 
+			phone = #{phone}
 	</update>
 
 	<select id="selectUserById" resultMap="userMap">

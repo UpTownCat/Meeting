@@ -64,6 +64,15 @@
 		where
 			id = #{id}
 	</select>
+	
+	<select id="selectEquipmentByName" resultType="Equipment">
+		select
+			id, name, count
+		from 
+			equipment
+		where
+			name = #{name}
+	</select>
 
 	<select id="selectAll" resultType="Equipment">
 		select

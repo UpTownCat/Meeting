@@ -184,10 +184,13 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
-	public String updateUser(Integer index, User user) {
-		System.out.println(user);
+	public String updateUser(Integer index, User user, HttpSession session) {
 		userService.updateUser(user);
-		return LIST_URL + "?index=" + index;
+		if(session.getAttribute("role") != null && session.getAttribute("role").toString().equals("3")) {
+			return LIST_URL + "?index=" + index;
+		}else {
+			return "redirect:/user/" + user.getId() + "/update";
+		}
 	}
 
 	@RequestMapping(value = "/{id}/department", method = RequestMethod.GET)

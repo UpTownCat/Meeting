@@ -198,5 +198,11 @@ var common = {
 					"¹Ø±Õ": function(){},
 				}
 			})
+		},
+		validPhoto: function(suffix) {
+			if(suffix == "png" || suffix == "jpg" || suffix == "jpng") {
+				return 1;
+			}
+			return 0;
 		}
 }

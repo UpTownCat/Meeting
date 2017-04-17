@@ -1,7 +1,12 @@
 package com.example.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,11 +69,25 @@ public class EquipmentController {
 		return LIST_URL + "?index=" + index;
 	}
 	
-//	@ModelAttribute
-//	public void bindEquipment(@RequestParam(value="id", required=false) Integer id, Map<String, Object> map) {
-//		if(id != null) {
-//			Equipment equipment = equipmentService.selectEquipmentById(id);
-//			map.put("equipment", equipment);
-//		}
-//	}
+	@RequestMapping(value="/validateNameIsUseful",method=RequestMethod.POST)
+	public  void validateLocationIsUseful(@RequestParam(value="id",required=false) Integer id,
+			HttpServletResponse response,@RequestParam("name")String name) throws IOException{
+			name = URLDecoder.decode(name, "utf-8");
+			Equipment equipment = equipmentService.selectEquipmentByName(name);
+			PrintWriter out = response.getWriter();
+			if(id==null){
+				if(equipment!=null){
+					out.print(0);
+				}else{
+					out.print(1);
+				}
+			}else{
+				if((equipment!=null&&equipment.getId()==id)||equipment==null){
+					out.print(1);
+				}else if(equipment!=null&&equipment.getId()!=id){
+					out.print(0);
+				}
+			}
+	}
+	
 }

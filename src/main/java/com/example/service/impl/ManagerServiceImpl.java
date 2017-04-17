@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.bean.Manager;
 import com.example.bean.Meeting;
 import com.example.bean.Page;
+import com.example.bean.User;
 import com.example.dao.ManagerDao;
 import com.example.dao.UserDao;
 import com.example.service.ManagerService;
@@ -40,9 +41,14 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
+	@Transactional
 	public int updateManager(Manager manager) {
 		// TODO Auto-generated method stub
 		 managerDao.updateManager(manager);
+		 User user = userDao.selectIdByPhone(manager.getPhone());
+		 manager.setId(user.getId());
+		 manager.setPassword(null);
+		 userDao.updateUser(manager);
 		 return 1;
 	}
 
@@ -80,6 +86,20 @@ public class ManagerServiceImpl implements ManagerService {
 	public Manager loginManager(String phone, String password) {
 		// TODO Auto-generated method stub
 		return managerDao.selectManagerByPhoneAndPassword(phone, password);
+	}
+
+	@Override
+	public List<Manager> selectAllByCondiction() {
+		// TODO Auto-generated method stub
+		return managerDao.selectAllByCondiction();
+	}
+
+	@Override
+	public void updateManagerDepartment(int id) {
+		// TODO Auto-generated method stub
+		managerDao.updateManagerDepartment(id);
+		Manager manager = managerDao.selectManagerById(id);
+		userDao.updateUserDepartment(manager.getPhone());
 	}
 
 }

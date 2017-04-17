@@ -21,4 +21,22 @@ public class CommonServiceImpl implements CommonService {
 		commonDao.updatePassword(id, tag, password);
 	}
 
+	@Override
+	public int selectByName(int tag, String number) {
+		// TODO Auto-generated method stub
+		return commonDao.selectByName(tag, number);
+	}
+
+	@Override
+	public int selectByPhone(int tag, String phone) {
+		// TODO Auto-generated method stub
+		return commonDao.selectByPhone(tag, phone);
+	}
+
+	@Override
+	public int selectByEmail(int tag, String email) {
+		// TODO Auto-generated method stub
+		return commonDao.selectByEmail(tag, email);
+	}
+
 }

@@ -10,6 +10,7 @@ public interface UserService {
 	int addUser(User user);
 	int deleteUser(int id);
 	int updateUser(User user);
+	void updateUserDepartment(String phone);
 	User selectUserById(int id);
 	List<User> selectAllByPage(Page page);
 	List<User> selectAll();

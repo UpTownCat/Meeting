@@ -80,4 +80,10 @@ public class EquipmentServiceImpl implements EquipmentService{
 		return 0;
 	}
 
+	@Override
+	public Equipment selectEquipmentByName(String name) {
+		// TODO Auto-generated method stub
+		return equipmentDao.selectEquipmentByName(name);
+	}
+
 }

@@ -21,9 +21,13 @@ pageContext.setAttribute("partName", "/meeting/user");
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <%@include file="../common3l.jsp"%>
+<script type="text/javascript" src="../../resources/js/user_input_valid.js"></script>
 <script type="text/javascript">
 		$(function() {
 			CalendarHandler.initialize(0, 0, 0);
+			var p1 = "${manager.phone }";
+			var e1 = "${manager.email }";
+			userInput.init(1, 1, p1, e1);
 			$('#email1').autoMail({
 				emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn']
 			});
@@ -31,6 +35,16 @@ pageContext.setAttribute("partName", "/meeting/user");
 				var val = $("#photo").val();
 				if(val.length == 0) {
 					common.remind("文件不能为空！")
+					return false;
+				}
+				var idx = val.lastIndexOf(".");
+				if(idx == -1) {
+					common.remind("文件无效");
+					return false;
+				}
+				var suffix = val.substring(idx + 1, val.length);
+				if(common.validPhoto(suffix) == 0) {
+					common.remind("图像文件只能为jpg, jpng, png类型");
 					return false;
 				}
 			})
@@ -65,17 +79,18 @@ pageContext.setAttribute("partName", "/meeting/user");
 						<form:form modelAttribute="manager" method="post" class="form">
 							<input type="hidden" name="_method" value="PUT">
 							<input type="hidden" name="index" value="1">
+							<input type="hidden" name="id" value="${manager.id }"> 
 							<div class="form-group">
 								<label class="label-control">姓名</label>
-								<form:input path="name" class="form-control" />
+								<form:input path="name" class="form-control input" />
 							</div>
 							<div class="form-group">
 								<label class="label-control">电话</label>
-								<form:input path="phone" class="form-control" />
+								<form:input path="phone" class="form-control phone" />
 							</div>
 							<div class="form-group">
 								<label class="label-control">邮箱</label>
-								<form:input path="email" class="form-control" id="email1"/>
+								<form:input path="email" class="form-control email" id="email1"/>
 							</div>
 							<div class="form-group">
 								<label class="label-control">性别</label>
@@ -90,13 +105,26 @@ pageContext.setAttribute("partName", "/meeting/user");
 								</c:if>
 							</div>
 							<c:if test="${sessionScope.role == 3 }">
-								<div class="form-group">
-									<label class="label-control">部门</label>
-									<form:select path="department.id" items="${departments }"
-										itemLabel="name" itemValue="id" class="form-control"></form:select>
-								</div>
+								<c:if test="${manager.department != null }">
+									<div class="form-group">
+										<label class="label-control">部门</label>
+										<form:select path="department.id" items="${departments }"
+											itemLabel="name" itemValue="id" class="form-control"></form:select>
+									</div>
+								</c:if>
+								<c:if test="${manager.department == null }">
+									<div class="form-group">
+										<label class="label-control">部门</label>
+										<select name="department.id" class="form-control">
+											<option value="0">请选择</option>
+											<c:forEach items="${departments }" var="department">
+												<option value="${department.id }">${department.name }</option>
+											</c:forEach>
+										</select>
+									</div>
+								</c:if>
 							</c:if>
-							<button class="btn btn-primary pull-right">确定</button>
+							<button class="btn btn-primary pull-right" id="submit44">确定</button>
 						</form:form>
 				</div>
 				<div style="float:right">

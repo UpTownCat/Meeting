@@ -32,6 +32,46 @@
 		where 
 			id = #{id}
 	</update>
+	
+	<select id="selectByPhone" resultType="int">
+		select 
+			count(*)
+		from
+			<if test="tag == 1">
+				user
+			</if>
+			<if test="tag == 2">
+				manager
+			</if>
+		where 
+			phone = #{phone}
+	</select>
+	
+	<select id="selectByEmail" resultType="int">
+		select
+			count(*)
+		from
+			<if test="tag == 1">
+				user
+			</if>
+			<if test="tag == 2">
+				manager
+			</if>
+		where
+			email = #{email}
+	</select>
+	
+	<select id="selectByName" resultType="int">
+		select
+			count(*)
+		from 
+			<if test="tag == 3">
+				meeting_room where number = #{number}
+			</if>
+			<if test="tag == 4">
+				department where name = #{number}
+			</if>
+	</select>
 		
 	
 </mapper>

@@ -42,6 +42,35 @@ pageContext.setAttribute("partName", "manager");
 				form.submit();
 				return false;
 			});
+			var t1 = 1;
+			$("#name").blur(function() {
+				var val = this.value;
+				if(val.length == 0) {
+					common.remind("部门名字不能为空！");
+					t1 = 0;
+					return false;
+				}
+				val = encodeURI(val);
+				$.get("/meeting/common/name", {"tag": 4, "name": val}, function(data) {
+					if(data != 0) {
+						t1 = 2;
+						common.remind("该名称的部门已经存在！");
+					}else {
+						t1 = 1;
+					}
+				})
+			})
+			
+			$("#submit44").click(function() {
+				if(t1 == 0) {
+					common.remind("部门名字不能为空！");
+					return false;
+				}
+				if(t1 == 2) {
+					common.remind("该名称的部门已经存在！");
+					return false;
+				};
+			})
 		})
 	</script>
 </head>
@@ -107,9 +136,9 @@ pageContext.setAttribute("partName", "manager");
 								value="${size == 5 ? page.index + 1 : page.index }">
 							<div class="form-group">
 								<label class="control-label">名称</label> <input
-									class="form-control" name="name" type="text">
+									class="form-control" name="name" type="text" id="name">
 							</div>
-							<button class="btn btn-primary" type="submit">确定</button>
+							<button class="btn btn-primary" type="submit" id="submit44">确定</button>
 						</form>
 					</div>
 				</div>

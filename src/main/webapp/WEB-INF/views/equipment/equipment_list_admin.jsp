@@ -20,6 +20,7 @@ pageContext.setAttribute("partName", "manager");
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <%@include file="../common2l.jsp"%>
+<script type="text/javascript" src="/meeting/resources/js/equipValidate.js"></script>
 <script type="text/javascript">
 		$(function() {
 			common.init("equipment", "  吗");
@@ -28,8 +29,12 @@ pageContext.setAttribute("partName", "manager");
 			var url = "/meeting/department/list";
 			page.init(6, index, total, url);
 			$("#forward").click(function(){
-				$("#toIndex").val($("#forwardPage").val());
-				$("#form").submit();
+				var index2 = $("#forwardPage").val();
+				var indexNum = Number(index2.trim());
+				if(/^[1-9]*[1-9][0-9]*$/.test(indexNum)&&indexNum<=total){
+					$("#toIndex").val(indexNum);
+					$("#form").submit();
+				}
 				return false;
 			});
 			$(".pageItem").click(function(){
@@ -115,19 +120,25 @@ pageContext.setAttribute("partName", "manager");
 				<%@include file="../page.jsp"%>
 				<div class="collapse" id="collapse">
 					<div class="well">
-						<form class="form-inline" action="/meeting/department/add"
+						<form class="form-inline" action="/meeting/equipment/add"
 							method="post">
 							<input type="hidden" name="index"
 								value="${size == 5 ? page.index + 1 : page.index }">
 							<div class="form-group">
-								<label class="control-label">名称</label> <input
+								<label class="control-label">名称</label> 
+								<input
 									class="form-control" name="name" type="text">
 							</div>
 							<div class="form-group">
-								<label class="control-label">数量</label> <input
+								<label class="control-label">数量</label> 
+								
+								<input
 									class="form-control" name="count" type="text">
 							</div>
-							<button class="btn btn-primary" type="submit">确定</button>
+							<input type="submit" class="btn btn-primary"  value="确定" name="addOrUpdate"/>
+							<br>
+							<span name="nameValidate" style="color: red"></span>
+							<span name="countValidate" style="color: red"></span>
 						</form>
 					</div>
 				</div>

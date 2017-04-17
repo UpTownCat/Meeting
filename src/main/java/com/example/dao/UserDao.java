@@ -28,6 +28,8 @@ public interface UserDao {
 	 * @return
 	 */
 	int updateUser(User user);
+	
+	void updateUserDepartment(String phone);
 	/**
 	 * 根据Id查询用户
 	 * @param id

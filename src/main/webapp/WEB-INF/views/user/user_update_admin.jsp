@@ -21,9 +21,13 @@ pageContext.setAttribute("partName", "/meeting/user");
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <%@include file="../common3l.jsp"%>
+<script type="text/javascript" src="../../resources/js/user_input_valid.js"></script>
 <script type="text/javascript">
 		$(function() {
 			common.init("", "");
+			var p1 = "${user.phone }";
+			var e1 = "${user.email }";
+			userInput.init(1, 1, p1, e1);
 			CalendarHandler.initialize(0, 0, 0);
 			$('#email1').autoMail({
 				emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn']
@@ -31,10 +35,21 @@ pageContext.setAttribute("partName", "/meeting/user");
 			$("#change").click(function() {
 				var val = $("#photo").val();
 				if(val.length == 0) {
-					alert("文件不能为空！");
+					common.remind("文件不能为空！")
+					return false;
+				}
+				var idx = val.lastIndexOf(".");
+				if(idx == -1) {
+					common.remind("文件无效");
+					return false;
+				}
+				var suffix = val.substring(idx + 1, val.length);
+				if(common.validPhoto(suffix) == 0) {
+					common.remind("图像文件只能为jpg, jpng, png类型");
 					return false;
 				}
 			})
+			
 		})
 		
 	</script>
@@ -70,15 +85,15 @@ pageContext.setAttribute("partName", "/meeting/user");
 							<input type="hidden" name="index" value="${param.index == null ? "0" : param.index }">
 							<div class="form-group">
 								<label class="label-control">姓名</label>
-								<form:input path="name" class="form-control" />
+								<form:input path="name" class="form-control input" />
 							</div>
 							<div class="form-group">
 								<label class="label-control">电话</label>
-								<form:input path="phone" class="form-control" />
+								<form:input path="phone" class="form-control phone" />
 							</div>
 							<div class="form-group">
 								<label class="label-control">邮箱</label>
-								<form:input path="email" class="form-control" id="email1"/>
+								<form:input path="email" class="form-control email" id="email1"/>
 							</div>
 							<div class="form-group">
 								<label class="label-control">性别</label>
@@ -99,7 +114,7 @@ pageContext.setAttribute("partName", "/meeting/user");
 										itemLabel="name" itemValue="id" class="form-control"></form:select>
 								</div>
 							</c:if>
-							<button class="btn btn-primary pull-right">确定</button>
+							<button class="btn btn-primary pull-right" id="submit44">确定</button>
 						</form:form>
 				</div>
 				<div style="float:right">

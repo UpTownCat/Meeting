@@ -61,15 +61,28 @@ public class DepartmentController {
 	@RequestMapping(value="/{id}/update", method=RequestMethod.GET)
 	public String prepareUpdate(@PathVariable Integer id, Map<String, Object> map) {
 		Department department = departmentService.selectDepartmentById(id);
-		List<Manager> managers = managerService.selectAll();
+		List<Manager> managers = managerService.selectAllByCondiction();
+		if(department.getManager() != null) {
+			managers.add(department.getManager());
+		}
 		map.put("department", department);
 		map.put("managers", managers);
 		return "/department/department_update_admin";
 	}
 	
 	@RequestMapping(value="/{id}/update", method=RequestMethod.PUT)
-	public String updateDepartment(Integer index, @ModelAttribute Department department) {
+	public String updateDepartment(Integer index, Department department) {
 		departmentService.updateDepartment(department);
+		Department department2 = departmentService.selectDepartmentById(department.getId());
+		if(department2.getManager() != null) {
+			managerService.updateManagerDepartment(department2.getManager().getId());
+		}
+		Manager manager = department.getManager();
+		if(manager.getId() != 0) {
+			manager = managerService.selectManagerById(manager.getId());
+			manager.setDepartment(department);
+			managerService.updateManager(manager);
+		}
 		return LIST_URL + "?index=" + index; 
 	}
 	
@@ -100,11 +113,4 @@ public class DepartmentController {
 		}
 		return dtos;
 	}
-//	@ModelAttribute
-//	public void bindDepartment(@RequestParam(value="id", required=false)Integer id, Map<String, Object> map) {
-//		if(id != null) {
-//			Department department = departmentService.selectDepartmentById(id);
-//			map.put("department", department);
-//		}
-//	}
 }

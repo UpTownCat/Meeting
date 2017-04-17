@@ -54,7 +54,7 @@ pageContext.setAttribute("partName", "meeting");
 			var relatedId = $(this).attr("id").substring(1);
 			var relatedFile = $("#f" + relatedId);
 			if(relatedFile.val().length == 0) {
-				alert("文件不能为空");
+				common.remind("文件不能为空")
 				return false;
 			}
 		})

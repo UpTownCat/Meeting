@@ -20,11 +20,12 @@
 <style type="text/css">
 </style>
 <script type="text/javascript">
+'use_strict';
 	$(function() {
 		var meetingId = "${sessionScope.meeting.id }";
 		CalendarHandler.initialize(0, 0, 0);
 		$("#toFirst").click(function(){
-			$("#tag").val(1);
+			$("#tag").val(1)
 		})
 		$("input[type=number]").focus(function(){
 			var id = $(this).attr("name");
@@ -36,12 +37,42 @@
 				$("#myModal").modal({show : true});
 				return false;
 			}
+			var result = inputNumberCheck();
+			if(result == 0) {
+				return false;
+			}
 		});
 		
 		$("#ok").click(function() {
+			inputNumberCheck();
 			$("#updateForm").submit();
 		});
 		
+		function inputNumberCheck() {
+			var table = $("table");
+			var inputs = $(".count");
+			var trs = table.find("tr");
+			var re = /^[0-9]+.?[0-9]*$/;
+			for(var i = 1; i < trs.length; i++) {
+				var tr = trs.eq(i);
+				var tds = tr.find("td");
+				var count = tds.eq(1).text();
+				var valueInput = inputs.eq(i - 1).val();
+				if(valueInput.length == 0) {
+					continue;
+				}
+				if(!re.test(valueInput)) {
+					common.remind("只能输入数字，请您检查输入！ ")
+					return 0;
+				}else {
+					if(count < valueInput) {
+						common.remind("使用设备的数量不能大于所拥有的数量！")
+						return 0;
+					}
+				}
+			}
+			return 1;
+		}
 	})
 </script>
 </head>
@@ -77,7 +108,7 @@
 									<tr>
 											<td>${equipment.name }</td>
 											<td>${equipment.count }</td>
-											<td><input type="number" class="form-control" name="${equipment.id }" style="margin-top:-2px" min="0" max="1000"></td>
+											<td><input type="text" class="form-control count" name="${equipment.id }" style="margin-top:-2px" min="0" max="1000"></td>
 									</tr>
 								</c:forEach>
 							</tbody>

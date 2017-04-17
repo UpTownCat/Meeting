@@ -121,15 +121,18 @@ public class ManagerController {
 		Manager manager = managerService.selectManagerById(id);
 		List<Department> departments = departmentService.selectAllByCondiction();
 		map.put("manager", manager);
-		departments.add(manager.getDepartment());
+		if(manager.getDepartment() != null) {
+			departments.add(manager.getDepartment());
+		}
 		map.put("departments", departments);
 		return "manager/manager_update_admin";
 	}
+	
 	@Transactional
 	@RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
 	public String updateManager(Manager manager, HttpSession session) {
+		Manager man = managerService.selectManagerById(manager.getId());
 		managerService.updateManager(manager);
-		Manager man = (Manager)session.getAttribute("manager");
 		User user = userService.selectIdByPhone(man.getPhone());
 		manager.setId(user.getId());
 		userService.updateUser(manager);

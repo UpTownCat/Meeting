@@ -16,4 +16,6 @@ public interface EquipmentService {
 	List<Equipment> selectAllByPage(Page page);
 	void useEquipments(List<Equipment> equipments, int meetingId);
 	List<Equipment> selectEquipmentByMeetingId(int id);
+	Equipment selectEquipmentByName(String name);
+	
 }

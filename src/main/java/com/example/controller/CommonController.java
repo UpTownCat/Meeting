@@ -25,6 +25,7 @@ import com.example.bean.Admin;
 import com.example.bean.Manager;
 import com.example.bean.Notice;
 import com.example.bean.User;
+import com.example.dao.CommonDao;
 import com.example.service.AdminService;
 import com.example.service.CommonService;
 import com.example.service.ManagerService;
@@ -40,6 +41,8 @@ public class CommonController {
 	private ManagerService mananManagerService;
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private CommonDao commonDao;
 	@Autowired
 	private CommonService commonService;
 	@Autowired
@@ -208,5 +211,30 @@ public class CommonController {
 		Notice notice = noticeSerivce.selectNotice();
 		return notice;
 	}
+	
+	@RequestMapping(value="/name", method=RequestMethod.GET) 
+	@ResponseBody
+	public int validateName(int tag, String name) {
+		try {
+			name = URLDecoder.decode(name, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return commonService.selectByName(tag, name);
+	}
+	
+	@RequestMapping(value="/email", method=RequestMethod.GET) 
+	@ResponseBody
+	public int validateEmail(int tag, String email) {
+		return commonService.selectByEmail(tag, email);
+	}
+	
+	@RequestMapping(value="/phone", method=RequestMethod.GET) 
+	@ResponseBody
+	public int validatePhone(int tag, String phone) {
+		return commonService.selectByPhone(tag, phone);
+	}
+	
 	
 }

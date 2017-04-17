@@ -21,8 +21,10 @@ pageContext.setAttribute("partName", "/meeting/user");
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <%@include file="../common2l.jsp"%>
+<script type="text/javascript" src="../resources/js/name_input_valid.js"></script>
 <script type="text/javascript">
 		$(function() {
+			name_valid.init("");
 			$('#email1').autoMail({
 				emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn']
 			});
@@ -46,20 +48,20 @@ pageContext.setAttribute("partName", "/meeting/user");
 					<form class="form" action="/meeting/room/add" method="post" enctype="multipart/form-data">
 						<div class="form-group">
 							<label class="control-label">编号</label> <input
-								class="form-control" name="number" type="text">
+								class="form-control input name" name="number" type="text">
 						</div>
 						<div class="form-group">
 							<label class="control-label">地点</label> <input
-								class="form-control" name="location" type="text">
+								class="form-control input" name="location" type="text">
 						</div>
 						<div class="form-group">
 							<label class="control-label">容量</label> <input
-								class="form-control" name="capacity" type="text">
+								class="form-control input" name="capacity" type="text">
 						</div>
 						<div class="form-group">
-							<label class="control-label">照片</label> <input name="photo" type="file" id="fileInput">
+							<label class="control-label">照片</label> <input class="input" name="photo" type="file" id="fileInput">
 						</div>
-						<button class="btn btn-primary" type="submit">确定</button>
+						<button class="btn btn-primary" type="submit" id="submit44">确定</button>
 					</form>
 				</div>
 				<%@include file="../preview_img.jsp" %>

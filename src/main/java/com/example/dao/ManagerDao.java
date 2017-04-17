@@ -11,8 +11,10 @@ public interface ManagerDao {
 	int insertManager(Manager manager);
 	int deleteManager(int id);
 	int updateManager(Manager manager);
+	void updateManagerDepartment(int id);
 	Manager selectManagerById(int id);
 	List<Manager> selectAll();
+	List<Manager> selectAllByCondiction();
 	List<Manager> selectAllByPage(Page page);
 	Manager selectManagerByDepartmentId(int id);
 	Manager selectManagerByMeetingId(int id);

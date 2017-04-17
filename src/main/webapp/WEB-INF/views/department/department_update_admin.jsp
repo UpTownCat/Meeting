@@ -44,8 +44,18 @@ String path = request.getContextPath();
 						</div>
 						<div class="form-group">
 							<label class="control-label">部门经理</label>
-							<form:select path="manager.id" items="${managers }"
-								itemLabel="name" itemValue="id" class="form-control"></form:select>
+							<c:if test="${department.manager != null  }">
+								<form:select path="manager.id" items="${managers }"
+									itemLabel="name" itemValue="id" class="form-control"></form:select>
+							</c:if>
+							<c:if test="${department.manager == null  }">
+									<select class="form-control" name="manager.id">
+										<option value="0">请选择</option>
+										<c:forEach items="${managers }" var="manager">
+											<option value="${manager.id }">${manager.name }</option>
+										</c:forEach>
+									</select>
+							</c:if>
 						</div>
 						<button class="btn btn-primary">确定</button>
 					</form:form>
