@@ -135,13 +135,12 @@ public final class CommonUtil {
 			fileName = null;
 		}
 		if(file != null); {
-			int index = file.getOriginalFilename().lastIndexOf(".");
-			fileName = System.currentTimeMillis() + new Random().nextInt(1000) + "split_abcd" +  file.getOriginalFilename().substring(index);
+				int index = file.getOriginalFilename().lastIndexOf(".");
+				fileName = System.currentTimeMillis() + "" + new Random().nextInt(1000) + "split_abcd" +  file.getOriginalFilename().substring(index);
 		}
 		try {
 			if (file != null) {
-				file.transferTo(new File(CommonUtil
-						.getConfigString("photoLocation") + "/" + fileName));
+				file.transferTo(new File(path + "/" + fileName));
 			}
 		} catch (IllegalStateException | IOException e) {
 			// TODO Auto-generated catch block
@@ -149,6 +148,18 @@ public final class CommonUtil {
 		}
 		
 		return fileName;
+	}
+	
+	public final static void saveDocument(MultipartFile file, String path, String fileName) {
+		try {
+			if (file != null) {
+				file.transferTo(new File(path + "/" + fileName));
+			}
+		} catch (IllegalStateException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public final static void writePhoto(String photo, InputStream inputStream, OutputStream outputStream) throws IOException {

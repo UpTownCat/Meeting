@@ -56,14 +56,13 @@ pageContext.setAttribute("partName", "meeting");
 
 <body>
 	<%@include file="../nav.jsp" %>
-		<div class="main" style="margin-top:50px">
-			<div class="nav_middle" style="float:left;">
+			<div class="nav_middle" style="float:left; margin-top: 50px">
 				<div class="nav_middle_top">
 					<%@include file="../calendar.jsp" %>
 				</div>
 				<%@include file="../notice.jsp" %>
 			</div>
-			<div class="container col-lg-9" style="float:left; padding: 0 0">
+			<div class="container col-lg-9" style="float:left; padding: 0 0; margin-top: 50px">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3>会议列表</h3> 
@@ -154,6 +153,5 @@ pageContext.setAttribute("partName", "meeting");
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>

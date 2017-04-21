@@ -13,5 +13,5 @@ public interface RecordDao {
 	List<Record> selectRecordByMeetingId(int id);
 	int deleteRecordById(int id);
 	List<Record> selectRecordByUserIdByPage(Page page, @Param("userId") int userId);
-	void updateRecord(Record record);
+	void updateRecord(@Param("id")Integer id, @Param("file") String file);
 }

@@ -11,5 +11,5 @@ public interface RecordService {
 	List<Record> selectRecordByMeetingId(int id);
 	int deleteRecordById(int id);
 	List<Record> selectRecordByUserIdByPage(Page page, int userId);
-	void updateRecord(Record record);
+	void updateRecord(Integer id, String file);
 }

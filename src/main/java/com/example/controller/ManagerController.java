@@ -131,12 +131,17 @@ public class ManagerController {
 	@Transactional
 	@RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
 	public String updateManager(Manager manager, HttpSession session) {
+		int id = manager.getId();
 		Manager man = managerService.selectManagerById(manager.getId());
 		managerService.updateManager(manager);
 		User user = userService.selectIdByPhone(man.getPhone());
 		manager.setId(user.getId());
 		userService.updateUser(manager);
-		return LIST_URL;
+		if(session.getAttribute("role").toString().equals("3")) {
+			return LIST_URL;
+		}else {
+			return "redirect:/manager/" + id + "/update";
+		}
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)

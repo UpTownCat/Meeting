@@ -38,9 +38,9 @@ public class RecordServiceImpl implements RecordService {
 	}
 
 	@Override
-	public void updateRecord(Record record) {
+	public void updateRecord(Integer id, String file) {
 		// TODO Auto-generated method stub
-		recordDao.updateRecord(record);
+		recordDao.updateRecord(id, file);
 	}
 
 	@Override

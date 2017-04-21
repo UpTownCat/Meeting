@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -201,41 +202,18 @@ public class UserController {
 
 	/**
 	 * 文件上传
-	 * 
+	 * `
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String uploadDocument(HttpServletRequest req) {
-		MultipartResolver resolver = new CommonsMultipartResolver(req
-				.getSession().getServletContext());
-		MultipartHttpServletRequest request = resolver.resolveMultipart(req);
-		MultipartFile document = request.getFile("document");
-		if (document != null) {
-			String originalFilename = document.getOriginalFilename();
-			String realName = System.currentTimeMillis() + ""
-					+ new Random().nextInt(1000) + "split" + originalFilename;
-			String location = CommonUtil.getConfigString("documentLocation");
-			File file = new File(location + realName);
-			try {
-				document.transferTo(file);
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			int id = Integer.parseInt(request.getParameter("id").toString());
-			Record record = new Record();
-			record.setId(id);
-			record.setFile(realName);
-			recordService.updateRecord(record);
-		}
-		int state = Integer.parseInt(request.getParameter("state").toString());
-		String searchContent = request.getParameter("searchContent");
-		int time = Integer.parseInt(request.getParameter("time").toString());
-		int index = Integer.parseInt(request.getParameter("index").toString());
+	public String uploadDocument(MultipartFile document, Integer state, Integer time, Integer index, String searchContent, Integer id) {
+		String fileName = System.currentTimeMillis() + "" + new Random().nextInt(1000) + "split" +  document.getOriginalFilename();
+		CommonUtil.saveDocument(document, CommonUtil.getConfigString("documentLocation"), fileName);
+		Record record = new Record();
+		record.setId(id);
+		record.setFile(fileName);
+		recordService.updateRecord(id, fileName);
 		Page page = new Page();
 		page.setTime(time);
 		page.setSearchContent(searchContent);

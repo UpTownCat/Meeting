@@ -79,15 +79,14 @@
 
 <body>
 	<%@include file="../nav.jsp"%>
-	<div class="main" style="margin-top: 50px">
-		<div class="nav_middle" style="float:left;">
+		<div class="nav_middle" style="float:left;margin-top: 50px;">
 			<div class="nav_middle_top">
 				<%@include file="../calendar.jsp"%>
 			</div>
 			<%@include file="../notice.jsp"%>
 		</div>
 
-		<div class="container col-lg-9" style=" padding: 0 0">
+		<div class="container col-lg-9" style="margin-top: 50px; padding: 0 0">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3>3.Ñ¡Ôñ»áÒéÆ÷²Ä</h3>
@@ -108,7 +107,7 @@
 									<tr>
 											<td>${equipment.name }</td>
 											<td>${equipment.count }</td>
-											<td><input type="text" class="form-control count" name="${equipment.id }" style="margin-top:-2px" min="0" max="1000"></td>
+											<td><input type="text" class="form-control count" name="${equipment.id }" style="margin-top:-2px" min="0" max="1000" value="${equipment.need }"></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -138,7 +137,6 @@
 						</div>
 					</div>
 				</div>
-	</div>
 
 </body>
 
